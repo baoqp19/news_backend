@@ -1,3 +1,113 @@
 <resources>
     <string name="app_name">news_backend</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="textAddress">Thành phố/ khu vực</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="sign_in_account">Sign in to your</string>
+    <string name="register_text"><u>Register Now</u></string>
+
+    <string name="txt_support_facebook">Hỗ trợ tức thì qua Facebook Messenger</string>
+    <string name="txt_support_zalo">Hỗ trợ tức thì qua Zalo Messenger</string>
+    <string name="txt_support_github">Nhận hỗ trợ Code uy tín qua Github</string>
+
+    <string name="open_nav">Open Navigation Drawer</string>
+    <string name="close_nav">Close Navigation Drawer</string>
+    <string name="login_failed">Đăng nhập thất bại</string>
+
+    <string name="back_1"><![CDATA[<-]]></string>
+    <string name="forward_1"><![CDATA[->]]></string>
+    <string name="news_detail">Chi tiết Tin Tức</string>
+    <string name="save_toolbar">Tin Tức Yêu Thích</string>
+    <string name="search_toolbar">Tìm Kiếm Tin Tức</string>
+    <string name="settings">Cài Đặt</string>
+    <string name="general">Chung</string>
+    <string name="leave_feedback">Tin đã đọc</string>
+    <string name="leave_feedback2">Các tin tức bạn đọc trong ngày.</string>
+    <string name="themes">Chuyển Đổi Chủ Đề</string>
+    <string name="language">Ngôn Ngữ</string>
+    <string name="language2">Bạn có thể thay đổi ngôn ngữ ứng dụng.</string>
+    <string name="faq">Đăng Ký Biểu Mẫu</string>
+    <string name="agreement">Xem Thêm</string>
+    <string name="data_privacy">Thời Tiết Các Tỉnh Thành</string>
+    <string name="terms">Xem Lịch Việt Nam</string>
+    <string name="sign_out">Đăng Xuất</string>
+    <string name="client_id">MÃ_CLIENT_CỦA_BẠN</string>
+    <string name="not_login_account">Bạn Chưa Đăng Nhập Tài Khoản Nào.</string>
+
+    <string name="sign_up">ĐĂNG KÝ</string>
+    <string name="sign_in">ĐĂNG NHẬP</string>
+
+    <!--title: bản tin-->
+    <string name="pho_bien">Phổ Biến</string>
+    <string name="noi_bat">Nổi Bật</string>
+    <string name="moi_nhat">Mới Nhất</string>
+    <string name="the_gioi">Thế Giới</string>
+    <string name="the_thao">Thể Thao</string>
+    <string name="phap_luat">Pháp Luật</string>
+    <string name="giao_duc">Giáo Dục</string>
+    <string name="suc_khoe">Sức Khoẻ</string>
+    <string name="doi_song">Đời Sống</string>
+    <string name="khoa_hoc">Khoa Học</string>
+    <string name="kinh_doanh">Kinh Doanh</string>
+    <string name="tam_su">Tâm Sự</string>
+    <string name="so_hoa">Số Hoá</string>
+    <string name="du_lich">Du Lịch</string>
+    <string name="full_information">Hãy Nhập Đầu Đủ Thông Tin</string>
+    <string name="post_information_successfully">Đăng Tin Tức Mới Thành Công.</string>
+    <string name="post_information_failed">Đăng Tin Tức Thấy Bại.</string>
+    <string name="access_by_admin">Chỉ Có Admin Mới Có Quyền Truy Cập.</string>
+
+    <string name="txt_ho_ten">Họ Tên:</string>
+    <string name="txt_name_admin">Hoàng Anh Tiến</string>
+    <string name="xem_th_m">Xem thêm</string>
+    <string name="gi_v_ng_amp_ngo_i_t"><![CDATA[Giá Vàng & Ngoại Tệ]]></string>
+    <string name="k_t_qu_s_s">Kết Quả Sổ Số</string>
+    <string name="t_s_b_ng">Tỷ Số Bóng Đá</string>
+    <string name="c_c_ti_n_ch_kh_c">Các Tiện Ích Khác</string>
+    <string name="c_c_ti_n_t_ch_kh_c">Các Tiện Tích Khác</string>
+    <string name="ti_n_ch_kh_c">Tiện ích khác</string>
+    <string name="tin_b_ng">Tin bóng đá</string>
+    <string name="tin_n_ng">Tin nóng</string>
+    <string name="trang_ch">Trang chủ</string>
+    <string name="danh_m_c">Danh mục</string>
+    <string name="ng_tin_t_c">Đăng tin tức</string>
+    <string name="ph_duy_t_tin_t_c">Phê duyệt tin tức</string>
+    <string name="ph_n_quy_n">Phân quyền</string>
+    <string name="t_i_kho_n">Tài khoản</string>
+    <string name="th_ng_tin_t_i_kho_n">Thông tin tài khoản</string>
+    <string name="ng_xu_t">Đăng xuất</string>
+    <string name="t_ng_h_p">Tổng hợp</string>
+    <string name="l_u">Lưu</string>
+    <string name="t_m_ki_m">Tìm Kiếm</string>
+    <string name="c_nh_n">Cá Nhân</string>
+    <string name="c_c_trang_m_ng_x_h_i">Các Trang Mạng Xã Hội</string>
+
+    <string name="change_password_failed">Thay đổi mật khẩu không thành công</string>
+    <string name="network_error">Network error</string>
+    <string name="delete_successfully">Xoá Tài Khoản Thành Công.</string>
+    <string name="delete_failed">Xoá Tài Khoản Thất Bại.</string>
+    <string name="error_systeam">Đã xảy ra lỗi hệ thống.</string>
+    <string name="update_info_successfully">Cập nhật thông tin thành công. </string>
+    <string name="update_info_failed">Cập nhật thông tin thấy bại, hãy thử lại.</string>
+    <string name="b_n_ch_a_ng_nh_p_t_i_kho_n_n_o">Bạn Chưa Đăng Nhập Tài Khoản Nào.</string>
+    <string name="hoangtien2k3qx1_gmail_com">hoangtien2k3qx1@gmail.com</string>
+    <string name="_0_00">0.00 đ</string>
+    <string name="c_c_i_u_kho_n">các điều khoản</string>
+    <string name="tin_t_c_qu_c_t">Tin tức quốc tế</string>
+    <string name="h_n_i">Hà Nội</string>
+    <string name="g_i_t_ng_i">Gọi tổng đài</string>
+    <string name="c_i_t">Cài đặt</string>
+    <string name="host_line">0828-7853</string>
+    <string name="successful_sign_in">Tài khoản của bạn đã sẵn sàng sử dụng. Bạn sẽ được chuyển hướng đến Trang Chính trong vài giây.</string>
+    <string name="dialog_image">Hình Ảnh Hộp Thoại</string>
+    <string name="congratulations">Chúc Mừng!</string>
+    <string name="app_logo">App Logo</string>
+
 </resources>
