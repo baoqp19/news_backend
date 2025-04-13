@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="com.hoangtien2k3.news_app.ui.account.signup.SignupFragment"
+        android:name="com.example.news_backend.ui.account.signup.SignupFragment"
         android:label="fragment_sign_up"
         tools:layout="@layout/fragment_sign_up">
 
@@ -16,7 +16,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.hoangtien2k3.news_app.ui.account.login.LoginFragment"
+        android:name="com.example.news_backend.ui.account.login.LoginFragment"
         android:label="fragment_sign_in"
         tools:layout="@layout/fragment_sign_in">
         <action
@@ -26,7 +26,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.hoangtien2k3.news_app.ui.home.fragment.HomeFragment"
+        android:name="com.example.news_backend.ui.home.fragment.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home">
 
@@ -34,7 +34,7 @@
 
     <dialog
         android:id="@+id/dialogFragment"
-        android:name="com.hoangtien2k3.news_app.ui.dialog.DialogFragment"
+        android:name="com.example.news_backend.ui.dialog.DialogFragment"
         android:label="fragment_dialog"
         tools:layout="@layout/fragment_dialog">
         <argument
@@ -53,7 +53,7 @@
 
 <!--    <fragment-->
 <!--        android:id="@+id/splashScreenFragment"-->
-<!--        android:name="com.hoangtien2k3.news_app.ui.splash.SplashScreenFragment"-->
+<!--        android:name="com.example.news_backend.ui.splash.SplashScreenFragment"-->
 <!--        android:label="fragment_splash_screen"-->
 <!--        tools:layout="@layout/fragment_splash_screen">-->
 <!--        <action-->

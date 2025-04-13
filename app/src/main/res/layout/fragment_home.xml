@@ -53,7 +53,7 @@
                     app:srcCompat="@drawable/ic_right_black_24dp" />
             </LinearLayout>
 
-            <com.hoangtien2k3.news_app.ui.home.NestedScrollableHost
+            <com.example.news_backend.ui.home.NestedScrollableHost
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -65,7 +65,7 @@
                     android:orientation="horizontal"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/item_news_football" />
-            </com.hoangtien2k3.news_app.ui.home.NestedScrollableHost>
+            </com.example.news_backend.ui.home.NestedScrollableHost>
 
             <LinearLayout
                 android:layout_width="match_parent"
