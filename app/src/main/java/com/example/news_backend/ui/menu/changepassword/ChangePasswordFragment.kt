@@ -24,7 +24,7 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
     private fun initUI() {
         with(binding) {
             with(viewModel) {
-                back.setOnClickListener { requireActivity().onBackPressed() }
+                back.setOnClickListener { requireActivity().onBackPressedDispatcher.onBackPressed() }
                 btnChangePassword.setOnClickListener {
                     val oldPassword = binding.txtOldPassword.text.toString()
                     val newPassword = binding.txtNewPassword.text.toString()
@@ -40,7 +40,7 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
             when (result) {
                 is Resource.Success -> {
                     Toast.makeText(requireContext(), result.message, Toast.LENGTH_SHORT).show()
-                    requireActivity().onBackPressed()
+                    requireActivity().onBackPressedDispatcher.onBackPressed()
                 }
                 is Resource.Error -> {
                     Toast.makeText(requireContext(), result.message, Toast.LENGTH_SHORT).show()

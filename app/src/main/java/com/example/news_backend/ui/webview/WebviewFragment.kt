@@ -19,7 +19,7 @@ class WebviewFragment : Fragment(R.layout.fragment_webview) {
     }
 
     private fun initUI() {
-        binding.back.setOnClickListener { requireActivity().onBackPressed() }
+        binding.back.setOnClickListener { requireActivity().onBackPressedDispatcher.onBackPressed() }
         val link = arguments?.getString("link") ?: arguments?.getString("linknews")
         link?.let {
             loadUrlToWebView(it)

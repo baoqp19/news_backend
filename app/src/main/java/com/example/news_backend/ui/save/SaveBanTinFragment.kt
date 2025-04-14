@@ -32,7 +32,7 @@ class SaveBanTinFragment : Fragment(R.layout.fragment_ban_tin_save) {
 
             val receivedValue = arguments?.getString("close")
             if (receivedValue == "false") {
-                btnBack.setOnClickListener { requireActivity().onBackPressed() }
+                btnBack.setOnClickListener { requireActivity().onBackPressedDispatcher.onBackPressed() }
             } else {
                 btnBack.setBackgroundResource(R.drawable.ic_setting)
                 btnBack.setOnClickListener { loadFragment(MenuFragment()) }

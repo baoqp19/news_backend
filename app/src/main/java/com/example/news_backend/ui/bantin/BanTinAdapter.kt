@@ -17,6 +17,7 @@ import com.example.news_backend.data.sharedpreferences.DataLocalManager
 import com.example.news_backend.databinding.ItemRowArticleBinding
 import com.example.news_backend.ui.save.SaveBanTinViewModel
 import com.example.news_backend.ui.save.ViewModelProviderFactory
+import java.util.Locale
 
 class BanTinAdapter(
     private val mContext: Context,
@@ -90,12 +91,12 @@ class BanTinAdapter(
 
     override fun getFilter(): Filter = object : Filter() {
         override fun performFiltering(constraint: CharSequence?): FilterResults {
-            val searchString = constraint?.toString()?.toLowerCase() ?: ""
+            val searchString = constraint?.toString()?.lowercase(Locale.getDefault()) ?: ""
             mListTinTucFiltered = if (searchString.isEmpty()) {
                 mListTinTuc.toList()
             } else {
                 mListTinTuc.filter {
-                    it.title.toLowerCase().contains(searchString)
+                    it.title.lowercase(Locale.getDefault()).contains(searchString)
                 }
             }
             return FilterResults().apply {

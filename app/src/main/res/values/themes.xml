@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="Theme.News_backend" parent="android:Theme.Material.Light.NoActionBar" />
+    <!-- Cập nhật theme kế thừa từ Theme.AppCompat -->
+    <style name="Theme.News_backend" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here -->
+    </style>
 
-<!--    <style name="Theme.News_backend" parent="Base." />-->
 
     <style name="MNBOTTOM">
         <item name="android:background">#F3F3F3</item>
@@ -13,9 +15,9 @@
         <item name="cardBackgroundColor">@color/white</item>
     </style>
 
-<!--    <style name="App.Custom.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">-->
-<!--        <item name="android:color">@color/white</item>-->
-<!--    </style>-->
+    <style name="App.Custom.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/white</item>
+    </style>
 
     <style name="CategoryFrame">
         <item name="android:background">@color/transparant_purple</item>
@@ -49,7 +51,7 @@
         <item name="android:background">@color/purple</item>
     </style>
 
-    <style name="RoundedShapeAppearance" parent="">
+    <style name="RoundedShapeAppearance">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
@@ -71,8 +73,8 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="DialogAnimation">
-        <item name="android:windowEnterAnimation" >@anim/slide_in</item>
-        <item name="android:windowExitAnimation" >@anim/slide_out</item>
+        <item name="android:windowEnterAnimation">@anim/slide_in</item>
+        <item name="android:windowExitAnimation">@anim/slide_out</item>
     </style>
 
     <style name="TitleTextStyle">
@@ -128,15 +130,15 @@
         <item name="android:background">@android:color/background_dark</item>
     </style>
 
-<!--    <style name="BottomNavigationView.Active" parent="@style/TextAppearance.AppCompat.Caption">-->
-<!--        <item name="android:textFontWeight" tools:targetApi="p">700</item>-->
-<!--        <item name="android:textSize">10sp</item>-->
-<!--    </style>-->
+    <style name="BottomNavigationView.Active" parent="@style/TextAppearance.AppCompat.Caption">
+        <item name="android:textFontWeight" tools:targetApi="p" tools:ignore="NewApi">700</item>
+        <item name="android:textSize">10sp</item>
+    </style>
 
-<!--    <style name="BottomNavigationView" parent="@style/TextAppearance.AppCompat.Caption">-->
-<!--        <item name="android:textFontWeight" tools:targetApi="p">500</item>-->
-<!--        <item name="android:textSize">10sp</item>-->
-<!--    </style>-->
+    <style name="BottomNavigationView" parent="@style/TextAppearance.AppCompat.Caption">
+        <item name="android:textFontWeight" tools:targetApi="p">500</item>
+        <item name="android:textSize">10sp</item>
+    </style>
 
     <style name="AppModalStyle" parent="Theme.AppCompat.DayNight.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>

@@ -32,7 +32,7 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
             }
 
             ok.setOnClickListener {
-                requireActivity().onBackPressed()
+                requireActivity().onBackPressedDispatcher.onBackPressed()
             }
         }
     }

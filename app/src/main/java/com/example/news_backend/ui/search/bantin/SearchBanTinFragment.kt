@@ -66,7 +66,7 @@ class SearchBanTinFragment(
             Log.d("Close", receivedValue.toString())
             if (receivedValue == "false") {
                 back.visibility = View.VISIBLE
-                back.setOnClickListener { requireActivity().onBackPressed() }
+                back.setOnClickListener { requireActivity().onBackPressedDispatcher.onBackPressed() }
             } else {
                 back.setImageResource(R.drawable.google)
                 back.setOnClickListener {

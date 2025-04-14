@@ -35,7 +35,7 @@ class UpdateUserFragment : Fragment(R.layout.fragment_update_user) {
             when (result) {
                 is Resource.Success -> {
                     Toast.makeText(requireContext(), R.string.update_info_successfully.toString() + result.message, Toast.LENGTH_SHORT).show()
-                    requireActivity().onBackPressed()
+                    requireActivity().onBackPressedDispatcher.onBackPressed()
                 }
                 is Resource.Error -> {
                     Toast.makeText(requireContext(), R.string.update_info_failed.toString(), Toast.LENGTH_SHORT).show()

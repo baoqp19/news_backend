@@ -14,6 +14,7 @@ import com.example.news_backend.data.sharedpreferences.DataLocalManager
 import com.example.news_backend.databinding.ActivityAccountBinding
 
 class AccountActivity : AppCompatActivity() {
+
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager2: ViewPager2
     private lateinit var adapter: MyFragmentAdapter

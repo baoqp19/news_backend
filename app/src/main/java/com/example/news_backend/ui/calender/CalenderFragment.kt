@@ -11,9 +11,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.news_backend.R
-import java.time.LocalDate
-import java.time.YearMonth
-import java.time.format.DateTimeFormatter
+import org.threeten.bp.LocalDate
+import org.threeten.bp.YearMonth
+import org.threeten.bp.format.DateTimeFormatter
 
 class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
 
@@ -30,7 +30,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         val view = inflater.inflate(R.layout.fragment_calender, container, false)
         imBackDocBaoC = view.findViewById(R.id.back)
         imBackDocBaoC.setOnClickListener {
-            requireActivity().onBackPressed()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
         return view
     }

@@ -12,7 +12,6 @@ import com.example.news_backend.activity.main.MainActivity
 import com.example.news_backend.data.sharedpreferences.DataLocalManager
 import com.example.news_backend.databinding.FragmentSignInBinding
 import com.example.news_backend.ui.account.AccountViewModel
-import com.example.news_backend.utils.LoadingScreen
 import com.example.news_backend.utils.Resource
 import com.example.news_backend.utils.viewBinding
 

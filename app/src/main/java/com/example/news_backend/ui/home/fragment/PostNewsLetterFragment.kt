@@ -38,7 +38,7 @@ class PostNewsLetterFragment : Fragment() {
         viewModel = ViewModelProvider(this)[PostNewsLetterViewModel::class.java]
         initUI()
 
-        binding.back.setOnClickListener { requireActivity().onBackPressed() }
+        binding.back.setOnClickListener { requireActivity().onBackPressedDispatcher.onBackPressed()}
         binding.btnPostNews.setOnClickListener {
             if (title == "" || link == "" || img == "" || pubDate == "" || category == "") {
                 Toast.makeText(
@@ -115,8 +115,9 @@ class PostNewsLetterFragment : Fragment() {
                         R.string.post_information_successfully.toString(),
                         Toast.LENGTH_SHORT
                     ).show()
-                    requireActivity().onBackPressed()
+                    requireActivity().onBackPressedDispatcher.onBackPressed()
                 }
+
             }
         }
     }

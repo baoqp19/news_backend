@@ -49,7 +49,7 @@ class FootballFragment : Fragment(R.layout.fragment_football) {
             })
 
             back.setOnClickListener {
-                requireActivity().onBackPressed()
+                requireActivity().onBackPressedDispatcher.onBackPressed()
             }
         }
     }
