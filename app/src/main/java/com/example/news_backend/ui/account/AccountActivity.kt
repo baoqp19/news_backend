@@ -12,47 +12,42 @@ import com.example.news_backend.R
 import com.example.news_backend.activity.main.MainActivity
 import com.example.news_backend.data.sharedpreferences.DataLocalManager
 import com.example.news_backend.databinding.ActivityAccountBinding
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.news_backend.ui.account.screen.AccountScreen
 
-class AccountActivity : AppCompatActivity() {
-
-    private lateinit var tabLayout: TabLayout
-    private lateinit var viewPager2: ViewPager2
-    private lateinit var adapter: MyFragmentAdapter
-    private lateinit var binding: ActivityAccountBinding
+class AccountActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityAccountBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
-        tabLayout = binding.tabLayout
-        viewPager2 = binding.viewPager2
+        setContent {
+            val isFirstInstalled = DataLocalManager.getInstance().getFirstInstalled()
 
-        Log.d("AccountAccount","${DataLocalManager.getInstance().getFirstInstalled()}")
-        if (!DataLocalManager.getInstance().getFirstInstalled()) {
-            initTabLayoutAndViewPager()
-        } else {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish()
+            if (!isFirstInstalled) {
+                AccountScreen()
+            } else {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
         }
     }
-
-    private fun initTabLayoutAndViewPager() {
-        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.sign_in)))
-        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.sign_up)))
-
-        val fragmentManager: FragmentManager = supportFragmentManager
-        adapter = MyFragmentAdapter(fragmentManager, lifecycle)
-        viewPager2.adapter = adapter
-
-        TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
-            tab.text = when (position) {
-                0 -> getString(R.string.sign_in)
-                1 -> getString(R.string.sign_up)
-                else -> getString(R.string.sign_in)
-            }
-        }.attach()
-    }
-
 }
