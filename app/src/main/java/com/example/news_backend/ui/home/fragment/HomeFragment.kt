@@ -182,7 +182,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), ViewModelProviderFactory 
                         info.name,
                         info.username,
                         info.email,
-                        info.role.first()
+                        info.roles.first()
                     )
                 }
             }
@@ -201,7 +201,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), ViewModelProviderFactory 
             }
             overlay.setOnClickListener {
                 closeFABMenu()
-                val githubUsername = "hoangtien2k3qx1"
+                val githubUsername = "baoqp19"
                 val githubUrl = "https://github.com/$githubUsername"
                 val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(githubUrl))
                 startActivity(browserIntent)
@@ -216,7 +216,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), ViewModelProviderFactory 
             menuFacebook.setOnClickListener {
                 closeFABMenu()
                 val facebookID = "100053705482952"
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("http://m.me/$facebookID"))
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/pqbao.05"))
                 startActivity(intent)
             }
             binding.overlay.setOnClickListener {

@@ -66,12 +66,12 @@ interface AppNewsService {
     /**
      * Tài khoản
      * **/
-    @POST("/api/auth/signin")
+    @POST("/api/auth/login")
     fun login(
         @Body loginRequest: LoginRequest
     ): Call<ApiResponse<AuthenticationResponse>>
 
-    @POST("/api/user/signup")
+    @POST("/api/auth/signup")
     fun signup(
         @Body signupRequest: SignupRequest
     ): Call<ApiResponse<UserResponse>>
@@ -83,7 +83,8 @@ interface AppNewsService {
 
 
     @Headers(
-        "Authorizationt: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJob2FuZ3RpZW4yazMuY29tIiwic3ViIjoiYWRtaW4iLCJleHAiOjE3MTYwMTQ1MjgsImlhdCI6MTcxMzQyMjUyOCwic2NvcGUiOiJBRE1JTiJ9.47Cz77JJuod1aSLA2bHYL2TwFSuUxVcJg5XbmmJBagT1ntHMkftpLpL84LFTkI3XTBece7urIjFGmlxmJgKiKg"
+//        "Authorizationt: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJob2FuZ3RpZW4yazMuY29tIiwic3ViIjoiYWRtaW4iLCJleHAiOjE3MTYwMTQ1MjgsImlhdCI6MTcxMzQyMjUyOCwic2NvcGUiOiJBRE1JTiJ9.47Cz77JJuod1aSLA2bHYL2TwFSuUxVcJg5XbmmJBagT1ntHMkftpLpL84LFTkI3XTBece7urIjFGmlxmJgKiKg"
+          "Authorizationt: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJob2FuZ3RpZW4yazMuY29tIiwic3ViIjoicXVvY2Jhb2R0cjcwIiwiZXhwIjoxNzQ3MjI2Mzk3LCJpYXQiOjE3NDQ2MzQzOTcsInNjb3BlIjoiQURNSU4ifQ.k-HyURj1lCOHdUDuOBNepubr-dxgf5ZhfVy82wMoaysfaQ5qGb_s6b36nzeTYDkwrySjbuyIgfXU64UqFk7Fzw"
     )
     @GET("/api/user/my-info")
     fun myinfo(): Call<ApiResponse<UserResponse>>

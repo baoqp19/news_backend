@@ -4,6 +4,22 @@
     <!-- Cập nhật theme kế thừa từ Theme.AppCompat -->
     <style name="Theme.News_backend" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here -->
+        <!-- Color customization -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <!-- Customize TextInputLayout and TextInputEditText appearance -->
+        <item name="colorControlNormal">@color/colorControlNormal</item>
+        <item name="colorControlActivated">@color/colorControlActivated</item>
+        <item name="colorControlHighlight">@color/colorControlHighlight</item>
+
+        <!-- Customize Button appearance -->
+        <item name="buttonStyle">@style/Widget.AppCompat.Button.Colored</item>
+
+        <!-- Customize TextAppearance for better text look -->
+        <item name="textAppearanceBody1">@style/TextAppearance.AppCompat.Body1</item>
+<!--        <item name="textAppearanceHeadline6">@style/TextAppearance.AppCompat.Headline6</item>-->
     </style>
 
 
@@ -147,5 +163,7 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowNoTitle">true</item>
     </style>
+
+
 
 </resources>

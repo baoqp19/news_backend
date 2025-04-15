@@ -13,7 +13,7 @@ data class UserResponse (
     val name: String,
     val username: String,
     val email: String,
-    val role: Set<String>,
+    val roles: Set<String>,
     val timestamps: Timestamps
 )
 
@@ -29,7 +29,7 @@ data class AuthenticationResponse(
     val name: String,
     val username: String,
     val email: String,
-    val role: Set<String>
+    val roles: Set<String>
 )
 
 data class IntrospectResponse(

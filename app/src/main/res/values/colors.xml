@@ -56,5 +56,41 @@
     <color name="background">#ffffff</color>
     <color name="stroke_color">#EFEFEF</color>
     <color name="card_bg">#ffffff</color>
+
+    <!-- Primary Color -->
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+
+    <!-- Control Colors -->
+    <color name="colorControlNormal">#000000</color>  <!-- Normal state of controls -->
+    <color name="colorControlActivated">#03DAC5</color>  <!-- Activated state of controls -->
+    <color name="colorControlHighlight">#B3B3B3</color>  <!-- Highlighted state of controls -->
+
+    <!-- Text Colors -->
+    <color name="textColorPrimary">#212121</color>  <!-- Primary text color -->
+    <color name="textColorSecondary">#757575</color>  <!-- Secondary text color -->
+
+    <!-- Background Colors -->
+    <color name="backgroundColor">#FFFFFF</color>  <!-- Main background color -->
+    <color name="backgroundColorLight">#F3F3F3</color>  <!-- Light background color -->
+    <color name="backgroundColorDark">#121212</color>  <!-- Dark background color -->
+
+    <!-- Error Colors -->
+    <color name="errorColor">#D32F2F</color>  <!-- Error color for fields -->
+    <color name="hintColor">#9E9E9E</color>  <!-- Color for hint text -->
+
+    <!-- Button Colors -->
+    <color name="buttonBackgroundColor">#6200EE</color>  <!-- Button background color -->
+    <color name="buttonTextColor">#FFFFFF</color>  <!-- Button text color -->
+
+<!--    &lt;!&ndash; Custom Colors &ndash;&gt;-->
+<!--    <color name="purple">#9C27B0</color>-->
+<!--    <color name="red">#F44336</color>-->
+<!--    <color name="blue">#3F51B5</color>-->
+<!--    <color name="white">#FFFFFF</color>-->
+<!--    <color name="black">#000000</color>-->
+<!--    <color name="transparant_purple">#88000000</color>-->
+
 </resources>
 

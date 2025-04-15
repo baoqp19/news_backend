@@ -12,6 +12,7 @@ import com.example.news_backend.activity.main.MainActivity
 import com.example.news_backend.data.sharedpreferences.DataLocalManager
 import com.example.news_backend.databinding.FragmentSignInBinding
 import com.example.news_backend.ui.account.AccountViewModel
+import com.example.news_backend.utils.LoadingScreen
 import com.example.news_backend.utils.Resource
 import com.example.news_backend.utils.viewBinding
 
@@ -24,6 +25,7 @@ class LoginFragment : Fragment(R.layout.fragment_sign_in) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         onClickListener()
+        observeViewModel()
     }
 
     private fun onClickListener() {
@@ -51,20 +53,20 @@ class LoginFragment : Fragment(R.layout.fragment_sign_in) {
         viewModel.loginResult.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Success -> {
-                    // user login successfully and save shareFerference
                     DataLocalManager.getInstance().setFirstInstalled(true)
 
                     /**
                      * save info User Login
                      * **/
                     resource.data?.let {
+                        val role = it.data.roles.firstOrNull() ?: "USER"
                         DataLocalManager.getInstance().setSaveTokenKey(it.data.token)
                         DataLocalManager.getInstance().setSaveUserInfo(
                             it.data.id,
                             it.data.name,
                             it.data.username,
                             it.data.email,
-                            "USER"
+                            role
                         )
                         Log.d(TAG, it.data.token )
                         Log.d(TAG, it.data.name )
@@ -85,7 +87,10 @@ class LoginFragment : Fragment(R.layout.fragment_sign_in) {
                     Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
                 }
                 is Resource.Loading -> {
-//                    LoadingScreen.displayLoading(requireContext(), false)
+                    LoadingScreen.displayLoading(requireContext(), true)
+                }
+                is Resource.Success, is Resource.Error -> {
+                    LoadingScreen.hideLoading()
                 }
             }
         }

@@ -49,7 +49,7 @@ class SignupFragment : Fragment(R.layout.fragment_sign_up) {
                                 it.data.name,
                                 it.data.username,
                                 it.data.email,
-                                it.data.role.first()
+                                it.data.roles.first()
                             )
                     }
                     Toast.makeText(requireContext(), resource.message, Toast.LENGTH_SHORT).show()

@@ -8,7 +8,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitBase {
-    private const val BASE_URL = Constants.BASE_URL_LOCAL
+    private const val BASE_URL = Constants.BASE_URL_LOGIN
 
     private val httpClient: OkHttpClient by lazy {
         OkHttpClient.Builder()
