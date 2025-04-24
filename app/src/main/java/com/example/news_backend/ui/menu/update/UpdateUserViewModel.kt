@@ -16,12 +16,12 @@ class UpdateUserViewModel : BaseViewModelImpl() {
     val updateUser: LiveData<Resource<ApiResponse<UserResponse>>> = _updateUser
 
     val apiService = RetrofitBase.apiService(AppNewsService::class.java)
-
-    fun updateUserInfo(name: String, username: String, email: String, password: String) {
+    val token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJob2FuZ3RpZW4yazMuY29tIiwic3ViIjoicXVvY2Jhb2R0cjcwIiwiZXhwIjoxNzQ3ODE1NzE5LCJpYXQiOjE3NDUyMjM3MTksInNjb3BlIjoiQURNSU4ifQ.pWkwdCD6vOXxvS_hWG23qkyl6EgIBqdOqB2_vqHFnRGJCZyHiuojPt8ZwRjqIAot8BtxOpN897QqDo66-VGq7A"
+    fun updateUserInfo(name: String, email: String, password: String) {
         val updateUserRequest = UpdateUserRequest(name, email, password)
         val userId = DataLocalManager.getInstance().getInfoUserId()
         performAction(_updateUser) {
-            apiService.updateUser(userId, updateUserRequest)
+            apiService.updateUser(userId, updateUserRequest, token)
         }
     }
 }

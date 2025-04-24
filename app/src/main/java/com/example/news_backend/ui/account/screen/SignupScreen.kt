@@ -1,11 +1,8 @@
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
@@ -14,15 +11,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.news_backend.data.sharedpreferences.DataLocalManager
 import com.example.news_backend.utils.Resource
 import com.example.news_backend.ui.account.AccountViewModel
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.graphics.Color
@@ -30,25 +24,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.runtime.*
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.navigation.NavHostController
 import com.example.news_backend.R // thay thế bằng tên package của bạn
 
-//import androidx.compose.foundation.Box
 
 @Composable
 fun SignupScreen(
@@ -63,6 +49,7 @@ fun SignupScreen(
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var acceptedTerms by remember { mutableStateOf(false) }
+    var passwordVisible by remember { mutableStateOf(false) }
 
     val showProgress = signupState is Resource.Loading
 
@@ -70,92 +57,104 @@ fun SignupScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
-            .padding(16.dp)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(16.dp)
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(16.dp))
 
-            Text("Tạo Tài Khoản", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color.Blue)
+            Text(
+                text = "Đăng ký tài khoản",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color(
+                    0xFF4250A6),
+                modifier = Modifier.padding(vertical = 16.dp)
+            )
 
-            Spacer(modifier = Modifier.height(16.dp))
-            OutlinedTextField(
+            Image(
+                painter = painterResource(id = R.drawable.avatar_pre),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(120.dp)
+                    .clip(RoundedCornerShape(60.dp)),
+                contentScale = ContentScale.Crop
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            CustomOutlinedTextField(
                 value = name,
                 onValueChange = { name = it },
-                label = { Text("Name") },
-                trailingIcon = { Icon(Icons.Default.Person, contentDescription = null) },
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(
-                value = username,
-                onValueChange = { username = it },
-                label = { Text("Username") },
-                trailingIcon = { Icon(Icons.Default.Person, contentDescription = null) },
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(
-                value = email,
-                onValueChange = { email = it },
-                label = { Text("Email ID") },
-                trailingIcon = { Icon(Icons.Default.Email, contentDescription = null) },
-                modifier = Modifier.fillMaxWidth(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(
-                value = password,
-                onValueChange = { password = it },
-                label = { Text("Password") },
-                visualTransformation = PasswordVisualTransformation(),
-                trailingIcon = { Icon(Icons.Default.Lock, contentDescription = null) },
-                modifier = Modifier.fillMaxWidth()
+                label = "Họ tên",
+                icon = Icons.Default.Person
             )
 
             Spacer(modifier = Modifier.height(12.dp))
+
+            CustomOutlinedTextField(
+                value = username,
+                onValueChange = { username = it },
+                label = "Tên đăng nhập",
+                icon = Icons.Default.Person
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            CustomOutlinedTextField(
+                value = email,
+                onValueChange = { email = it },
+                label = "Email",
+                icon = Icons.Default.Email,
+                keyboardType = KeyboardType.Email
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            OutlinedTextField(
+                value = password,
+                onValueChange = { password = it },
+                label = { Text("Mật khẩu") },
+                leadingIcon = { Icon(Icons.Default.Lock, contentDescription = null) },
+                trailingIcon = {
+                    IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                        Icon(
+                            imageVector = if (passwordVisible) Icons.Default.Lock else Icons.Default.Lock,
+                            contentDescription = "Toggle password visibility"
+                        )
+                    }
+                },
+                visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor =  Color(0xFF32578D),
+                    unfocusedBorderColor = Color(0xFFBDBDBD),
+                    focusedLeadingIconColor =  Color(0xFF32578D),
+                    unfocusedLeadingIconColor = Color.Gray,
+                    focusedLabelColor =  Color(0xFF32578D),
+                    cursorColor = Color(0xFF32578D),
+                )
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Checkbox(
                     checked = acceptedTerms,
                     onCheckedChange = { acceptedTerms = it },
-                    colors = CheckboxDefaults.colors(checkedColor = Color.Red)
+                    colors = CheckboxDefaults.colors(checkedColor = Color(0xFF475AB2))
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text("Chấp nhận các điều khoản và điều kiện")
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
-            Row {
-                Text("Đã có tài khoản ?")
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(
-                    "Đăng nhập !",
-                    color = Color.Blue,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.clickable {
-                        navController.popBackStack() // Quay lại màn login
-                    }
-                )
-            }
-
             Spacer(modifier = Modifier.height(16.dp))
-            Image(
-                painter = painterResource(id = R.drawable.avatar_pre),
-                contentDescription = null,
-                modifier = Modifier
-                    .height(150.dp)
-                    .width(300.dp),
-                contentScale = ContentScale.Crop
-            )
 
-            Spacer(modifier = Modifier.height(16.dp))
             Button(
                 onClick = {
                     if (name.isBlank() || username.isBlank() || email.isBlank() || password.isBlank()) {
@@ -168,11 +167,26 @@ fun SignupScreen(
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(50.dp),
+                    .padding(bottom = 16.dp),
                 shape = RoundedCornerShape(12.dp),
-                colors = ButtonDefaults.buttonColors(containerColor= Color.Red)
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF475AB2))
             ) {
-                Text("Đăng ký", color = Color.White, fontSize = 18.sp)
+                Text("Đăng ký", fontSize = 18.sp, color = Color.White)
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Row {
+                Text("Đã có tài khoản?")
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    text = "Đăng nhập !",
+                    color = Color.Blue,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .clickable { navController.popBackStack() }
+                        .padding(4.dp)
+                )
             }
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -208,12 +222,34 @@ fun SignupScreen(
     }
 }
 
-// Dummy LoadingScreen
+
 @Composable
-fun LoadingScreen(show: Boolean) {
-    if (show) {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            CircularProgressIndicator()
-        }
-    }
+fun CustomOutlinedTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    label: String,
+    icon: ImageVector,
+    keyboardType: KeyboardType = KeyboardType.Text
+) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        label = { Text(label) },
+        leadingIcon = {
+            Icon(icon, contentDescription = null)
+        },
+        singleLine = true,
+        keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+        modifier = Modifier
+            .fillMaxWidth(),
+        shape = RoundedCornerShape(12.dp),
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedBorderColor =  Color(0xFF32578D),
+            unfocusedBorderColor = Color(0xFFBDBDBD),
+            focusedLeadingIconColor =  Color(0xFF32578D),
+            unfocusedLeadingIconColor = Color.Gray,
+            focusedLabelColor =  Color(0xFF32578D),
+            cursorColor =  Color(0xFF32578D),
+        )
+    )
 }

@@ -35,6 +35,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavHostController
 import com.example.news_backend.R
 import com.example.news_backend.data.sharedpreferences.DataLocalManager
@@ -69,37 +70,76 @@ fun LoginScreen(
             elevation = CardDefaults.cardElevation(8.dp)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
-                Text("Đăng nhập", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color.Blue)
+                Text(
+                    "Đăng nhập",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color(
+                    0xFF4250A6),
+                    modifier = Modifier.fillMaxWidth(), // để Text chiếm hết chiều rộng
+                    textAlign = TextAlign.Center        // căn giữa nội dung
+                )
                 Spacer(modifier = Modifier.height(12.dp))
 
                 Text("Email", fontSize = 12.sp)
                 OutlinedTextField(
                     value = email,
                     onValueChange = { email = it },
-                    modifier = Modifier.fillMaxWidth(),
-                    placeholder = { Text("Nhập email") },
-                    trailingIcon = {
-                        Icon(painterResource(R.drawable.ic_baseline_person), contentDescription = null)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),
+                    placeholder = { Text("Nhập email...", color = Color.Gray) },
+                    label = { Text("Email") },
+                    leadingIcon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_baseline_person),
+                            contentDescription = null,
+                            tint = Color(0xFF616161)
+                        )
                     },
+                    shape = RoundedCornerShape(12.dp),
+                    singleLine = true,
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Color(0xFFB71C1C)
+                        focusedTextColor = Color.Black,
+                        unfocusedTextColor = Color.DarkGray,
+                        focusedBorderColor = Color(0xFF32578D),
+                        unfocusedBorderColor = Color(0xFFBDBDBD),
+                        focusedLeadingIconColor =  Color(0xFF32578D),
+                        unfocusedLeadingIconColor = Color.Gray,
+                        cursorColor =  Color(0xFF32578D),
                     )
                 )
 
+
                 Spacer(modifier = Modifier.height(8.dp))
 
-                Text("Mật khẩu", fontSize = 12.sp)
+                Text("Mật Khẩu", fontSize = 12.sp)
                 OutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
-                    modifier = Modifier.fillMaxWidth(),
-                    placeholder = { Text("Nhập mật khẩu") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),
+                    placeholder = { Text("Nhập mật khẩu...", color = Color.Gray) },
                     visualTransformation = PasswordVisualTransformation(),
-                    trailingIcon = {
-                        Icon(painterResource(R.drawable.ic_baseline_lock_open), contentDescription = null)
+                    label = { Text("password") },
+                    leadingIcon = {
+                        Icon(
+                            painter = painterResource(id =  R.drawable.ic_baseline_lock_open),
+                            contentDescription = null,
+                            tint = Color(0xFF616161)
+                        )
                     },
+                    shape = RoundedCornerShape(12.dp),
+                    singleLine = true,
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Color(0xFFB71C1C)
+                        focusedTextColor = Color.Black,
+                        unfocusedTextColor = Color.DarkGray,
+                        focusedBorderColor = Color(0xFF32578D),
+                        unfocusedBorderColor = Color(0xFFBDBDBD),
+                        focusedLeadingIconColor =  Color(0xFF32578D),
+                        unfocusedLeadingIconColor = Color.Gray,
+                        cursorColor =  Color(0xFF32578D),
                     )
                 )
 
@@ -166,7 +206,7 @@ fun LoginScreen(
                 .fillMaxWidth()
                 .padding(bottom = 16.dp),
             shape = RoundedCornerShape(12.dp),
-            colors = ButtonDefaults.buttonColors(containerColor= Color.Red)
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF475AB2))
         ) {
             Text("Đăng Nhập", fontSize = 18.sp, color = Color.White)
         }

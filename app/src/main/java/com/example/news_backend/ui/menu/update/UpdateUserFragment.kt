@@ -23,10 +23,9 @@ class UpdateUserFragment : Fragment(R.layout.fragment_update_user) {
     private fun initUI() {
         binding.btnUpdateUser.setOnClickListener {
             val name = binding.txtName.text.toString()
-            val username = binding.txtUsername.text.toString()
             val email = binding.txtEmail.text.toString()
             val password = binding.txtPassword.text.toString()
-            viewModel.updateUserInfo(name, username, email, password)
+            viewModel.updateUserInfo(name, email, password)
         }
     }
 

@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import com.google.gson.Gson
 
 class MySharedPreferences(context: Context) {
+
     private val MY_SHARED_PREFERENCES = "MY_SHARED_PREFERENCES"
     private val USER_NAME = "USER_NAME"
     private val ID = "ID"
@@ -48,9 +49,11 @@ class MySharedPreferences(context: Context) {
         sharedPreferences.edit().putString(EMAIL, email).apply()
         sharedPreferences.edit().putString(USER_ROLES, role).apply()
     }
+
     fun saveTokenKey(token: String) {
         sharedPreferences.edit().putString(TOKEN_KEY, token).apply()
     }
+
     fun removeValueFromSharedPreferences() {
         sharedPreferences.edit().remove(ID).apply()
         sharedPreferences.edit().remove(NAME).apply()

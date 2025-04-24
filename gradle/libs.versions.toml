@@ -29,8 +29,11 @@ playservices = "21.0.0"
 viewpager2 = "1.1.0"
 navigation = "2.7.7"
 runtimeLivedata = "1.7.8"
-androidx_lifecycle = "2.5.1"
+androidx_lifecycle = "2.8.7"
 navigationCompose = "2.8.9"
+coil = "2.5.0"
+media3CommonKtx = "1.6.1"
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -86,6 +89,9 @@ androidx_lifecycle_livedata = { module = "androidx.lifecycle:lifecycle-livedata-
 androidx_lifecycle_runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidx_lifecycle" }
 compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+androidx-media3-common-ktx = { group = "androidx.media3", name = "media3-common-ktx", version.ref = "media3CommonKtx" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

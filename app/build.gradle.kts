@@ -55,6 +55,7 @@ dependencies {
     implementation(libs.room.ktx)
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.media3.common.ktx)
     kapt(libs.room.compiler)
 
     // Glide
@@ -119,7 +120,7 @@ dependencies {
 //
 //    implementation(libs.play.services.base)
 //    implementation(libs.play.services.location)
-
+    implementation(libs.coil.compose)
     // Compose dependencies
     implementation(libs.compose.ui)
     implementation(libs.compose.ui.tooling)
