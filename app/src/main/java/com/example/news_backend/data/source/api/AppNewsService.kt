@@ -8,6 +8,8 @@ import com.example.news_backend.network.AuthenticationResponse
 import com.example.news_backend.network.IntrospectResponse
 import com.example.news_backend.network.UserResponse
 import com.example.news_backend.network.request.ChangePasswordRequest
+import com.example.news_backend.network.request.FoolBallRequest
+import com.example.news_backend.network.request.FootballDto
 import com.example.news_backend.network.request.IntrospectRequest
 import com.example.news_backend.network.request.LoginRequest
 import com.example.news_backend.network.request.PostNewsLetterRequest
@@ -16,6 +18,8 @@ import com.example.news_backend.network.request.SignupRequest
 import com.example.news_backend.network.request.UpdateUserRequest
 import com.example.news_backend.network.response.PostNewsLetterResponse
 import com.example.news_backend.network.response.SavePosResponse
+import com.example.news_backend.network.response.UserResponseCoppy
+import com.example.news_backend.network.response.UserUpdateRoleRequest
 import com.example.news_backend.network.response.WeatherResponse
 import com.example.news_backend.utils.Constants
 import retrofit2.Call
@@ -53,6 +57,10 @@ interface AppNewsService {
     @GET("/api/football")
     fun getFootballData(): Call<ApiResponse<List<Football>>>
 
+    @POST("/api/football")
+    fun postFootball(
+        @Body football: FoolBallRequest
+    ): Call<FootballDto>
 
     /**
      * Thời tiết
@@ -156,4 +164,15 @@ interface AppNewsService {
     @DELETE("/api/post/all")
     fun deleteAllPostNews(): Call<Void>
 
+    @GET("/api/user")
+    suspend fun getAllUsers(
+        @Header("Authorization") token: String
+    ): UserResponseCoppy
+
+    @PUT("/api/user/role/{id}")
+    suspend fun updateUserRole(
+        @Path("id") userId: Long,
+        @Body request: UserUpdateRoleRequest,
+        @Header("Authorization") token: String
+    ): Response<Unit>
 }

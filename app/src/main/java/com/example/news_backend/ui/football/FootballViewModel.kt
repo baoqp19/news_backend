@@ -6,6 +6,8 @@ import com.example.news_backend.data.models.Football
 import com.example.news_backend.data.source.api.AppNewsService
 import com.example.news_backend.data.source.api.RetrofitBase
 import com.example.news_backend.network.ApiResponse
+import com.example.news_backend.network.request.FoolBallRequest
+import com.example.news_backend.network.request.FootballDto
 import com.example.news_backend.ui.base.BaseViewModelImpl
 import com.example.news_backend.utils.Resource
 import retrofit2.Call
@@ -31,4 +33,12 @@ class FootballViewModel : BaseViewModelImpl() {
         }
     }
 
+//    private val _postResult = MutableLiveData<Resource<ApiResponse<FootballDto>>>()
+//    val postResult: LiveData<Resource<ApiResponse<FootballDto>>> = _postResult
+//
+//    fun postFootballNews(request: FoolBallRequest) {
+//        performAction(_postResult) {
+//            apiService.postFootball(request) // phải trả về Call<ApiResponse<FootballDto>>
+//        }
+//    }
 }

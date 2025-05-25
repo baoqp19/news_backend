@@ -3,6 +3,8 @@ package com.example.news_backend.ui.base
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.news_backend.network.ApiResponse
+import com.example.news_backend.network.AuthenticationResponse
 import com.example.news_backend.utils.Resource
 import retrofit2.Call
 import retrofit2.Callback
@@ -18,18 +20,20 @@ open class BaseViewModelImpl : BaseViewModel, ViewModel() {
         call.enqueue(object : Callback<T> {
             override fun onResponse(call: Call<T>, response: Response<T>) {
                 if (response.isSuccessful) {
-                    val responseData = response.body()
-                    responseData?.let {
-                        resultLiveData.value = Resource.Success(it)
+                    val body = response.body()
+                    if (body != null) {
+                        resultLiveData.value = Resource.Success(body)
+                    } else {
+                        resultLiveData.value = Resource.Error("Empty response body")
                     }
                 } else {
-                    resultLiveData.value = Resource.Error("Request failed")
+                    resultLiveData.value = Resource.Error("Request failed: ${response.code()} ${response.message()}")
                 }
             }
 
             override fun onFailure(call: Call<T>, t: Throwable) {
-                Log.d("Network", "Network error")
-                resultLiveData.value = Resource.Error("Network error")
+                Log.d("Network", "Đăng kí thành công")
+                resultLiveData.value = Resource.Error("Đăng kí thành công")
             }
         })
     }

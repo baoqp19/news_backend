@@ -2,8 +2,9 @@ package com.example.news_backend.utils
 
 object Constants {
 //    const val BASE_URL_LOCAL = "https://7417-2405-4803-fe03-3600-fc5d-9bb3-999-abad.ngrok-free.app"
-    const val BASE_URL_LOCAL = "http://192.168.48.245:9090";
-    const val BASE_URL_LOGIN = "http://192.168.48.245:9090"
+    const val BASE_URL_LOGIN = "http://192.168.48.245:9090";   // T4-409
+//    const val BASE_URL_LOGIN = "http://192.168.46.245:9090"
+//    const val BASE_URL_LOGIN = "http://172.20.10.9:9090"
     const val API_KEY = "bd81e7f01e744515b6db53690c2ff58b"
     const val BASE_URL = "https://newsapi.org/"
     const val SEARCH_TIME_DELAY = 500L

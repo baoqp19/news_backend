@@ -51,7 +51,7 @@ fun LoginScreen(
     val context = LocalContext.current
     val loginState by viewModel.loginResult.observeAsState()
 
-    var email by remember { mutableStateOf("") }
+    var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
     Column(
@@ -81,15 +81,15 @@ fun LoginScreen(
                 )
                 Spacer(modifier = Modifier.height(12.dp))
 
-                Text("Email", fontSize = 12.sp)
+                Text("Username", fontSize = 12.sp)
                 OutlinedTextField(
-                    value = email,
-                    onValueChange = { email = it },
+                    value = username,
+                    onValueChange = { username = it },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 8.dp),
                     placeholder = { Text("Nhập email...", color = Color.Gray) },
-                    label = { Text("Email") },
+                    label = { Text("Username") },
                     leadingIcon = {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_baseline_person),
@@ -155,30 +155,9 @@ fun LoginScreen(
                     horizontalArrangement = Arrangement.Center,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    IconButton(onClick = { /* TODO: Facebook login */ }) {
-                        Image(painterResource(R.drawable.facebook), contentDescription = "Facebook", modifier = Modifier.size(30.dp))
-                    }
-                    Spacer(modifier = Modifier.width(45.dp))
                     IconButton(onClick = { /* TODO: Google login */ }) {
                         Image(painterResource(R.drawable.googlelogo), contentDescription = "Google", modifier = Modifier.size(40.dp))
                     }
-                }
-
-                Spacer(modifier = Modifier.height(8.dp))
-                Row(
-                    horizontalArrangement = Arrangement.Center,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text("Không có tài khoản?")
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        "Đăng kí ngay !",
-                        color = Color.Blue,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.clickable {
-                            navController.popBackStack() // Quay lại màn login
-                        }
-                    )
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -196,10 +175,10 @@ fun LoginScreen(
 
         Button(
             onClick = {
-                if (email.isBlank() || password.isBlank()) {
+                if (username.isBlank() || password.isBlank()) {
                     Toast.makeText(context, "Hãy nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show()
                 } else {
-                    viewModel.login(email, password)
+                    viewModel.login(username, password)
                 }
             },
             modifier = Modifier
@@ -217,9 +196,19 @@ fun LoginScreen(
             is Resource.Loading<*> -> LoadingScreen(true)
             is Resource.Success<*> -> {
                 resource.data?.let {
-                    DataLocalManager.getInstance().setSaveUserInfo(
-                        it.data.id, it.data.name, it.data.username, it.data.email, it.data.roles.first()
-                    )
+                    // Lưu thông tin người dùng
+                    DataLocalManager.getInstance().apply {
+                        setSaveUserInfo(
+                            it.data.id,
+                            it.data.name,
+                            it.data.username,
+                            it.data.email,
+                            it.data.roles.first()
+                        )
+
+                        // ✅ Lưu token
+                        setSaveTokenKey(it.data.token)
+                    }
                 }
                 Toast.makeText(context, resource.message ?: "Đăng nhập thành công", Toast.LENGTH_SHORT).show()
                 navController.navigate("home") {

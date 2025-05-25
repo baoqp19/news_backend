@@ -55,12 +55,18 @@ class MySharedPreferences(context: Context) {
     }
 
     fun removeValueFromSharedPreferences() {
-        sharedPreferences.edit().remove(ID).apply()
-        sharedPreferences.edit().remove(NAME).apply()
-        sharedPreferences.edit().remove(USER_NAME).apply()
-        sharedPreferences.edit().remove(EMAIL).apply()
-        sharedPreferences.edit().remove(USER_ROLES).apply()
+        sharedPreferences.edit().remove(ID)
+            .remove(NAME)
+            .remove(USER_NAME)
+            .remove(EMAIL)
+            .remove(USER_ROLES)
+            .remove(TOKEN_KEY)  // thêm xóa token
+            .apply()
     }
+    fun clearAll() {
+        sharedPreferences.edit().clear().apply()
+    }
+
 
 
     fun getUserId(): Long {

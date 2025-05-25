@@ -49,7 +49,7 @@ fun SettingsDialogContent(
             .padding(16.dp),
         shape = RoundedCornerShape(24.dp),
         elevation = CardDefaults.cardElevation(8.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFF1E1E1E))
+        colors = CardDefaults.cardColors(containerColor = Color(0xFF1A111A))
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
 
@@ -60,12 +60,13 @@ fun SettingsDialogContent(
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 ),
-                modifier = Modifier.padding(bottom = 24.dp)
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(bottom = 24.dp)
             )
 
             SettingsDialogButton(
-                text = "🔒  Đổi Mật Khẩu",
-                iconRes = R.drawable.passwordlast, // Sử dụng emoji cho tối giản
+                text = "Đổi Mật Khẩu",
                 onClick = onChangePassword
             )
 
@@ -77,8 +78,7 @@ fun SettingsDialogContent(
             )
 
             SettingsDialogButton(
-                text = "👤  Cập Nhật Thông Tin",
-                iconRes = R.drawable.ic_person,
+                text = "Cập Nhật Thông Tin",
                 onClick = {
                     navController.navigate("userinfo")
                 }
@@ -92,8 +92,7 @@ fun SettingsDialogContent(
             )
 
             SettingsDialogButton(
-                text = "🗑️  Xoá Tài Khoản",
-                iconRes = R.drawable.logout,
+                text = "Xoá Tài Khoản",
                 onClick = {
                     navController.navigate("userinfo")
                 },
@@ -107,11 +106,9 @@ fun SettingsDialogContent(
 @Composable
 fun SettingsDialogButton(
     text: String,
-    @DrawableRes iconRes: Int,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    // Sử dụng màu nền nổi bật với độ sáng nhẹ khi tương tác
     val customButtonColor = MaterialTheme.colorScheme.primary
     val interactionSource = remember { MutableInteractionSource() }
     val pressed by interactionSource.collectIsPressedAsState()
@@ -121,36 +118,23 @@ fun SettingsDialogButton(
             .fillMaxWidth()
             .clickable(
                 onClick = onClick,
-                indication = null, // Loại bỏ hiệu ứng mặc định của ripple
+                indication = null,
                 interactionSource = interactionSource
             )
             .background(
-                color = if (pressed) customButtonColor.copy(alpha = 0.2f) else customButtonColor.copy(alpha = 0.1f),
+                color = if (pressed) Color(0x0F9479B7)
+                else customButtonColor.copy(alpha = 0.3f),
                 shape = RoundedCornerShape(16.dp)
             )
-            .padding(horizontal = 16.dp, vertical = 12.dp) // Điều chỉnh padding bên trong
+            .padding(horizontal = 16.dp, vertical = 12.dp),
+        contentAlignment = Alignment.Center
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            // Hiển thị văn bản
-            Text(
-                text = text,
-                style = MaterialTheme.typography.bodyLarge.copy(
-                    color = Color.White,
-                    fontWeight = FontWeight.Medium
-                ),
-                modifier = Modifier.weight(1f)
+        Text(
+            text = text,
+            style = MaterialTheme.typography.bodyLarge.copy(
+                color = Color.White,
+                fontWeight = FontWeight.Medium
             )
-
-            // Hiển thị biểu tượng (Icon)
-            Icon(
-                painter = painterResource(id = iconRes),
-                contentDescription = null,
-                modifier = Modifier.size(24.dp),
-                tint = Color.White
-            )
-        }
+        )
     }
 }

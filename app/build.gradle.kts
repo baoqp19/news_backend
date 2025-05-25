@@ -109,6 +109,8 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1")
+    implementation("io.coil-kt:coil-compose:2.4.0") // hoặc phiên bản mới nhất
+    implementation("com.google.android.gms:play-services-auth:21.0.0")
     implementation(libs.compose.foundation)
     // Debug
     debugImplementation(libs.androidx.ui.tooling)

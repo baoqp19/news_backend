@@ -1,5 +1,6 @@
 package com.example.news_backend.ui.home
 
+import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
@@ -7,6 +8,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.news_backend.data.sharedpreferences.DataLocalManager
+import com.example.news_backend.ui.Navbar.CategoryScreen
+import com.example.news_backend.ui.Navbar.PostFoolBallScreen
+import com.example.news_backend.ui.Navbar.PostNewsScreen
+import com.example.news_backend.ui.Navbar.UserListScreen
 import com.example.news_backend.ui.account.AccountViewModel
 import com.example.news_backend.ui.account.screen.AccountScreen
 import com.example.news_backend.ui.account.screen.LoginScreen
@@ -27,8 +33,14 @@ fun AppNavigation(themeViewModel: ThemeViewModel) {
     // Khởi tạo NavController
     val navController = rememberNavController()
 
+    val startDestination = if (DataLocalManager.getInstance().getInfoTokenKey().isNullOrEmpty()) {
+        "login"
+    } else {
+        "home"
+    }
+
     // Liên kết NavController với NavHost
-    NavHost(navController = navController, startDestination = "login") {
+    NavHost(navController = navController, startDestination = startDestination) {
         composable("login") {
             val viewModel: AccountViewModel = viewModel()
             AccountScreen(navController = navController, viewModel = viewModel)
@@ -38,10 +50,11 @@ fun AppNavigation(themeViewModel: ThemeViewModel) {
             MainScreen(navController = navController)
         }
         composable("category"){
-            val viewModel: BanTinViewModel = viewModel()
-            BanTinScreen(navController = navController, viewModel = viewModel,  onOpenWebView = { link ->
-                navController.navigate("webview?link=$link")
-            })
+            CategoryScreen(
+                onOpenWebView = { link ->
+                    navController.navigate("webview?link=$link")
+                }
+            )
         }
         composable("search") {
             val viewModel: BanTinViewModel = viewModel() // Sử dụng viewModel của Navigation
@@ -97,6 +110,28 @@ fun AppNavigation(themeViewModel: ThemeViewModel) {
                 navController.popBackStack()
             }
         }
+        composable("categoryNav") {
+            CategoryScreen(
+                onOpenWebView = { link ->
+                    navController.navigate("webview?link=$link")
+                }
+            )
+        }
+        composable("postNews") {
+            PostNewsScreen(
+                onSubmitSuccess = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        composable("postFoolball") {
+            PostFoolBallScreen(
+                onSubmitSuccess = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        composable("userlist") { UserListScreen() }
 
     }
 }

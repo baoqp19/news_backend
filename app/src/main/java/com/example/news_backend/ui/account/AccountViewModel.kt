@@ -15,6 +15,7 @@ import com.example.news_backend.utils.Resource
 import retrofit2.Call
 
 class AccountViewModel : BaseViewModelImpl() {
+
     private val _loginResult = MutableLiveData<Resource<ApiResponse<AuthenticationResponse>>>()
     val loginResult: LiveData<Resource<ApiResponse<AuthenticationResponse>>> = _loginResult
 
@@ -33,6 +34,7 @@ class AccountViewModel : BaseViewModelImpl() {
         performAction(_signupResult) {
             createSignupCall(SignupRequest(name, username, email, password, roles))
         }
+
     }
 
     private fun createLoginCall(request: LoginRequest): Call<ApiResponse<AuthenticationResponse>> {

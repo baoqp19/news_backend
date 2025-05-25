@@ -1,17 +1,11 @@
 package com.example.news_backend.ui.home
 
-import android.net.Uri
-import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -26,8 +20,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -36,13 +28,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import coil.compose.AsyncImage
+import coil.request.CachePolicy
+import coil.request.ImageRequest
 import kotlinx.coroutines.launch
-import com.example.news_backend.R
 import com.example.news_backend.data.models.BanTin
 import com.example.news_backend.data.models.Football
 import com.example.news_backend.data.sharedpreferences.DataLocalManager
-import com.example.news_backend.network.response.SavePosResponse
-import com.example.news_backend.ui.account.AccountViewModel
+import com.example.news_backend.ui.Navbar.DrawerContent
 import com.example.news_backend.ui.bantin.BanTinViewModel
 import com.example.news_backend.ui.football.FootballViewModel
 import com.example.news_backend.ui.save.SaveBanTinViewModel
@@ -202,8 +194,15 @@ fun MainContent(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewsTopBar(onMenuClick: () -> Unit) {
-    TopAppBar(
-        title = { Text("News App") },
+    CenterAlignedTopAppBar(
+        title = {
+            Text(
+                text = "News App",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.White
+            )
+        },
         navigationIcon = {
             IconButton(onClick = onMenuClick) {
                 Icon(Icons.Default.Menu, contentDescription = null)
@@ -214,7 +213,7 @@ fun NewsTopBar(onMenuClick: () -> Unit) {
                 Icon(Icons.Default.Search, contentDescription = "Search")
             }
         },
-        colors = TopAppBarDefaults.topAppBarColors(
+        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
             containerColor = Color(0xFF1C1B1F),
             titleContentColor = Color.White,
             navigationIconContentColor = Color.White,
@@ -237,7 +236,7 @@ fun BottomNavigationBar(navController: NavController) {
     )
 
     Surface(
-        color = Color(0xFF1C1B1F), // nền đen xám đậm
+        color = Color(0xFF1C1B1F),
         shadowElevation = 4.dp
     ) {
         Row(
@@ -283,114 +282,6 @@ fun BottomNavigationBar(navController: NavController) {
 
 data class BottomNavItem(val route: String, val icon: ImageVector, val label: String)
 //  Bottom Home
-@Composable
-fun DrawerContent(navController: NavController, drawerState: DrawerState, permission: String?) {
-    val context = LocalContext.current
-    val scope = rememberCoroutineScope()
-
-    Column(modifier = Modifier.fillMaxSize()) {
-        // Phần tiêu đề "Một Số Tùy Chọn"
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color(0xFFFFC107)) // Màu vàng
-                .padding(16.dp)
-        ) {
-            Column {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.post), // icon header
-                        contentDescription = null,
-                        tint = Color.White,
-                        modifier = Modifier.size(24.dp)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = "Một Số Tuỳ Chọn",
-                        style = MaterialTheme.typography.titleMedium.copy(
-                            color = Color.White,
-                            fontWeight = FontWeight.Bold
-                        )
-                    )
-                }
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = "giúp truy cập nhanh những tiện ích",
-                    style = MaterialTheme.typography.bodySmall.copy(color = Color.White)
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        // Các mục trong Drawer
-        DrawerItem(
-            title = "Trang chủ",
-            icon = Icons.Default.Home
-        ) {
-            scope.launch { drawerState.close() }
-        }
-
-        DrawerItem(
-            title = "Danh mục",
-            icon = Icons.Default.List
-        ) {
-            navController.navigate("categoryFragment")
-            scope.launch { drawerState.close() }
-        }
-
-        DrawerItem(
-            title = "Đăng tin tức",
-            icon = Icons.Default.Send
-        ) {
-            if (permission == Constants.ROLE_ADMIN) {
-                navController.navigate("postNewsFragment")
-            } else {
-                Toast.makeText(context, "Chức năng này chỉ dành cho admin", Toast.LENGTH_SHORT).show()
-            }
-            scope.launch { drawerState.close() }
-        }
-
-        DrawerItem(
-            title = "Phê duyệt tin tức",
-            icon = Icons.Default.KeyboardArrowDown
-        ) {
-            scope.launch { drawerState.close() }
-        }
-
-        DrawerItem(
-            title = "Phân quyền",
-            icon = Icons.Default.Person
-        ) {
-            scope.launch { drawerState.close() }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Tiêu đề phụ
-        Text(
-            text = "Tài khoản",
-            modifier = Modifier.padding(start = 16.dp),
-            style = MaterialTheme.typography.labelLarge.copy(color = Color.Gray)
-        )
-
-        DrawerItem(
-            title = "Thông tin tài khoản",
-            icon = Icons.Default.Person
-        ) {
-            navController.navigate("userProfileFragment")
-            scope.launch { drawerState.close() }
-        }
-
-        DrawerItem(
-            title = "Đăng xuất",
-            icon = Icons.Default.Lock
-        ) {
-            // Handle logout
-            scope.launch { drawerState.close() }
-        }
-    }
-}
 
 @Composable
 fun FootballSection(
@@ -561,18 +452,22 @@ fun BanTinItem(
                 .padding(8.dp)
         ) {
             AsyncImage(
-                model = tinTuc.img,
-                contentDescription = tinTuc.title,
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(tinTuc.img)
+                    .crossfade(true)
+                    .diskCachePolicy(CachePolicy.ENABLED)
+                    .memoryCachePolicy(CachePolicy.ENABLED)
+                    .build(),
+                contentDescription = null,
                 modifier = Modifier
-                    .size(80.dp)
+                    .size(100.dp)
                     .clip(RoundedCornerShape(8.dp))
-                        .clickable {
-                    onSave(tinTuc)
-                    onClick(tinTuc.link)
-            },
+                    .clickable {
+                        onSave(tinTuc)
+                        onClick(tinTuc.link)
+                    },
                 contentScale = ContentScale.Crop
             )
-
             Spacer(modifier = Modifier.width(10.dp))
 
             Column(
@@ -614,29 +509,6 @@ fun BanTinItem(
                 }
             }
         }
-    }
-}
-
-@Composable
-fun DrawerItem(title: String, icon: ImageVector, onClick: () -> Unit) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick)
-            .padding(vertical = 12.dp, horizontal = 16.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = null,
-            modifier = Modifier.size(24.dp),
-            tint = Color(0xFF1A237E)
-        )
-        Spacer(modifier = Modifier.width(16.dp))
-        Text(
-            text = title,
-            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium)
-        )
     }
 }
 

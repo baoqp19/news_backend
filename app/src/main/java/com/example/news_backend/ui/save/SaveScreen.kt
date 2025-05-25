@@ -55,9 +55,8 @@ fun SaveBanTinScreen(
     }
 
     Scaffold(
-        bottomBar = {
-            BottomNavigationBar(navController = navController)
-        }
+        bottomBar = { BottomNavigationBar(navController = navController)},
+        containerColor = Color.Black // Màu nền cho Scaffold
     ) { innerPadding ->
 
         Column(
@@ -71,10 +70,10 @@ fun SaveBanTinScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp)
-                    .background(Color.White)
+                    .background(Color.Black)
                     .padding(horizontal = 12.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 IconButton(onClick = {
                     if (closeParam.value) onOpenSetting() else onBack()
@@ -86,6 +85,7 @@ fun SaveBanTinScreen(
                             else
                                 R.drawable.ic_arrow_back_24px
                         ),
+                        tint = Color.Unspecified,
                         contentDescription = "Back"
                     )
                 }
@@ -93,7 +93,8 @@ fun SaveBanTinScreen(
                 Text(
                     text = "Tin Đã Đọc",
                     fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
                 )
 
                 IconButton(onClick = {
@@ -101,12 +102,12 @@ fun SaveBanTinScreen(
                 }) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_delete),
-                        contentDescription = "Delete"
+                        tint = Color.Unspecified,
+                        contentDescription = "Delete",
                     )
                 }
             }
 
-            // Danh sách tin đã lưu
             banTinState?.let { result ->
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
                     when (result) {
@@ -161,8 +162,6 @@ fun SaveBanTinScreen(
         }
     }
 }
-
-
 
 @Composable
 fun BanTinItem(

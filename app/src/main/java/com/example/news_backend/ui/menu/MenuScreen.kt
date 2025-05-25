@@ -257,6 +257,8 @@ class ThemeViewModel : ViewModel() {
         isDarkTheme.value = !isDarkTheme.value
     }
 }
+
+
 @Composable
 fun DarkModeSwitchCard(
     iconRes: Int,
@@ -345,9 +347,7 @@ fun SettingsCardItem(
                 tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(24.dp)
             )
-
             Spacer(modifier = Modifier.width(16.dp))
-
             Text(
                 text = title,
                 style = MaterialTheme.typography.bodyLarge
@@ -391,7 +391,6 @@ fun MenuCardItem(
 }
 
 // LỊCH THI ĐẤU
-
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

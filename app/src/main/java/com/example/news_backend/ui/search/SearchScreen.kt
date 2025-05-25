@@ -3,6 +3,8 @@ package com.example.news_backend.ui.search
 import androidx.compose.runtime.Composable
 import com.example.news_backend.ui.home.BottomNavigationBar
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -69,12 +71,21 @@ fun SearchScreen(
                 onQueryChange = { query = it },
                 onSearchToggle = { isSearching = !isSearching },
                 isSearching = isSearching,
-                onClearSearch = { query = "" }
+                onClearSearch = { query = "" },
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = Color(0xFF497BC4),
+                    unfocusedBorderColor = Color(0xFF32578D).copy(alpha = 0.5f),
+                    focusedLeadingIconColor = Color(0xFFC8D2E0),
+                    unfocusedLeadingIconColor = Color(0xFFBEC5D2).copy(alpha = 0.5f),
+                    focusedTextColor = Color(0xFFA0AEBE),
+                    unfocusedTextColor = Color(0xFFA3AEC0).copy(alpha = 0.8f)
+                )
             )
         },
         bottomBar = {
             BottomNavigationBar(navController = navController)
-        }
+        },
+                containerColor = Color(0xFF121212),
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -113,6 +124,7 @@ fun SearchScreen(
     }
 }
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchAppBar(
@@ -120,61 +132,71 @@ fun SearchAppBar(
     onQueryChange: (String) -> Unit,
     onSearchToggle: () -> Unit,
     isSearching: Boolean,
-    onClearSearch: () -> Unit
+    onClearSearch: () -> Unit,
+    colors: TextFieldColors
 ) {
-    TopAppBar(
+    CenterAlignedTopAppBar(
         title = {
             if (isSearching) {
                 SearchBarTextField(
                     query = query,
                     onQueryChange = onQueryChange,
-                    onClearSearch = onClearSearch
+                    onClearSearch = onClearSearch,
+                    colors = colors
                 )
             } else {
-                Text("Tìm kiếm bản tin")
+                Text(
+                    text = "Tìm kiếm bản tin",
+                    color = Color.White
+                )
             }
         },
         actions = {
             IconButton(onClick = onSearchToggle) {
-                Icon(Icons.Default.Search, contentDescription = "Tìm kiếm")
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = "Tìm kiếm",
+                    tint = Color.White
+                )
             }
-        }
+        },
+        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+            containerColor = Color.Black
+        )
     )
 }
+
+
 
 @Composable
 fun SearchBarTextField(
     query: String,
     onQueryChange: (String) -> Unit,
-    onClearSearch: () -> Unit
+    onClearSearch: () -> Unit,
+    colors: TextFieldColors,
+    iconTint: Color = MaterialTheme.colorScheme.primary
 ) {
     OutlinedTextField(
         value = query,
         onValueChange = onQueryChange,
         placeholder = { Text("Tìm kiếm...") },
-        leadingIcon = {
-            Icon(Icons.Default.Search, contentDescription = "Tìm kiếm")
-        },
         trailingIcon = {
             if (query.isNotEmpty()) {
                 IconButton(onClick = onClearSearch) {
-                    Icon(Icons.Default.Close, contentDescription = "Xoá")
+                    Icon(Icons.Default.Close, contentDescription = "Xoá", tint = iconTint)
                 }
             }
         },
         modifier = Modifier
             .fillMaxWidth()
+            .heightIn(min = 52.dp)
             .padding(horizontal = 8.dp, vertical = 4.dp),
         shape = RoundedCornerShape(16.dp),
         singleLine = true,
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = MaterialTheme.colorScheme.primary,
-            unfocusedBorderColor = MaterialTheme.colorScheme.outline,
-            focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
-            unfocusedLeadingIconColor = MaterialTheme.colorScheme.onSurfaceVariant
-        )
+        colors = colors
     )
 }
+
 
 @Composable
 fun BanTinItem(
