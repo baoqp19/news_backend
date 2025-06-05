@@ -21,16 +21,20 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import com.example.news_backend.network.request.FoolBallRequest
 import com.example.news_backend.ui.football.FootballPostViewModel
+import com.example.news_backend.ui.football.FootballViewModel
 import com.example.news_backend.utils.Resource
 
 
 @Composable
 fun PostFoolBallScreen(
     viewModel: FootballPostViewModel = viewModel(),
-    onSubmitSuccess: () -> Unit = {}
+    onSubmitSuccess: () -> Unit = {},
+    viewModelview: FootballViewModel = viewModel(),
 ) {
     val context = LocalContext.current
     val postResult by viewModel.postResult.observeAsState()
+    val state by viewModelview.footballNews.observeAsState()
+
 
     var title by remember { mutableStateOf("") }
     var thumbnail by remember { mutableStateOf("") }
@@ -47,6 +51,7 @@ fun PostFoolBallScreen(
                 thumbnail = ""
                 url = ""
                 date = ""
+                viewModelview.fetchDataCallAPI()
             }
 
             is Resource.Error<*> -> {
@@ -60,7 +65,7 @@ fun PostFoolBallScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
+            .background(MaterialTheme.colorScheme.background)
             .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -74,7 +79,7 @@ fun PostFoolBallScreen(
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    "Đăng Tin Bản Tin",
+                    "Đăng Tin Bóng Đá",
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color(0xFF4250A6),
@@ -100,6 +105,7 @@ fun PostFoolBallScreen(
                             date = date
                         )
                         viewModel.postFootballNews(postRequest)
+
                     },
                     modifier = Modifier.fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4250A6))

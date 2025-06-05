@@ -1,5 +1,6 @@
 package com.example.news_backend.ui.home
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -9,6 +10,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.*
@@ -35,23 +37,34 @@ import com.example.news_backend.data.models.BanTin
 import com.example.news_backend.data.models.Football
 import com.example.news_backend.data.sharedpreferences.DataLocalManager
 import com.example.news_backend.ui.Navbar.DrawerContent
+import com.example.news_backend.ui.bantin.BanTinItem
 import com.example.news_backend.ui.bantin.BanTinViewModel
+import com.example.news_backend.ui.bantin.HotNewsSection
+import com.example.news_backend.ui.football.FootballSection
 import com.example.news_backend.ui.football.FootballViewModel
 import com.example.news_backend.ui.save.SaveBanTinViewModel
 import com.example.news_backend.utils.Constants
 import com.example.news_backend.utils.Resource
 
-
 @Composable
-fun MainScreen(navController: NavController) {
+fun MainScreen(navController: NavController,  viewModelview: FootballViewModel = viewModel(),) {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     val permission = remember { mutableStateOf<String?>(Constants.ROLE_ADMIN) }
 
+    val colorScheme = MaterialTheme.colorScheme
+
+    // Gọi lại API mỗi khi vào màn hình
+    LaunchedEffect(Unit) {
+        viewModelview.fetchDataCallAPI()
+    }
+
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            ModalDrawerSheet {
+            ModalDrawerSheet(
+                drawerContainerColor = colorScheme.surface
+            ) {
                 DrawerContent(navController, drawerState, permission.value)
             }
         }
@@ -65,17 +78,17 @@ fun MainScreen(navController: NavController) {
             bottomBar = {
                 BottomNavigationBar(navController)
             },
-            containerColor = Color(0xFF121212),
+            containerColor = colorScheme.background,
             content = { innerPadding ->
                 val viewModel: BanTinViewModel = viewModel()
                 val saveViewModel: SaveBanTinViewModel = viewModel()
+
                 MainContent(
                     innerPadding = innerPadding,
                     navController = navController,
                     viewModel = viewModel,
                     saveViewModel = saveViewModel,
                     onOpenWebView = { link ->
-                        // Ví dụ: chuyển đến WebViewScreen và truyền URL
                         navController.navigate("webview?link=$link")
                     }
                 )
@@ -83,6 +96,7 @@ fun MainScreen(navController: NavController) {
         )
     }
 }
+
 
 @Composable
 fun MainContent(
@@ -190,34 +204,43 @@ fun MainContent(
 
 
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewsTopBar(onMenuClick: () -> Unit) {
+    val colorScheme = MaterialTheme.colorScheme
+
     CenterAlignedTopAppBar(
         title = {
             Text(
                 text = "News App",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color.White
+                color = colorScheme.onPrimaryContainer
             )
         },
         navigationIcon = {
             IconButton(onClick = onMenuClick) {
-                Icon(Icons.Default.Menu, contentDescription = null)
+                Icon(
+                    Icons.Default.Menu,
+                    contentDescription = null,
+                    tint = colorScheme.onPrimaryContainer
+                )
             }
         },
         actions = {
             IconButton(onClick = { /* TODO: Search */ }) {
-                Icon(Icons.Default.Search, contentDescription = "Search")
+                Icon(
+                    Icons.Default.Search,
+                    contentDescription = "Search",
+                    tint = colorScheme.onPrimaryContainer
+                )
             }
         },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-            containerColor = Color(0xFF1C1B1F),
-            titleContentColor = Color.White,
-            navigationIconContentColor = Color.White,
-            actionIconContentColor = Color.White
+            containerColor = colorScheme.background,
+            titleContentColor = colorScheme.onPrimaryContainer,
+            navigationIconContentColor = colorScheme.onPrimaryContainer,
+            actionIconContentColor = colorScheme.onPrimaryContainer
         )
     )
 }
@@ -235,25 +258,33 @@ fun BottomNavigationBar(navController: NavController) {
         BottomNavItem("profile", Icons.Default.Person, "Profile")
     )
 
+    val colorScheme = MaterialTheme.colorScheme
+    val selectedColor = colorScheme.primary
+    val unselectedColor = colorScheme.onSurfaceVariant
+    val backgroundColor = colorScheme.surface
+
     Surface(
-        color = Color(0xFF1C1B1F),
+        color = backgroundColor,
         shadowElevation = 4.dp
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(50.dp) // 👉 CHỈ 50dp
+                .height(50.dp)
                 .padding(horizontal = 8.dp),
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
             items.forEach { item ->
+                val isSelected = currentRoute == item.route
                 Column(
                     modifier = Modifier
                         .clickable {
-                            if (currentRoute != item.route) {
+                            if (!isSelected) {
                                 navController.navigate(item.route) {
-                                    popUpTo(navController.graph.startDestinationId) { saveState = true }
+                                    popUpTo(navController.graph.startDestinationId) {
+                                        saveState = true
+                                    }
                                     launchSingleTop = true
                                     restoreState = true
                                 }
@@ -265,13 +296,13 @@ fun BottomNavigationBar(navController: NavController) {
                     Icon(
                         imageVector = item.icon,
                         contentDescription = item.label,
-                        tint = if (currentRoute == item.route) Color(0xFF8A96EE) else Color.Gray,
+                        tint = if (isSelected) Color(0xFF8A96EE)  else unselectedColor,
                         modifier = Modifier.size(20.dp)
                     )
                     Text(
                         text = item.label,
                         fontSize = 10.sp,
-                        color = if (currentRoute == item.route) Color(0xFF8A96EE) else Color.Gray
+                        color = if (isSelected) Color(0xFF8A96EE)  else unselectedColor
                     )
                 }
             }
@@ -282,235 +313,6 @@ fun BottomNavigationBar(navController: NavController) {
 
 data class BottomNavItem(val route: String, val icon: ImageVector, val label: String)
 //  Bottom Home
-
-@Composable
-fun FootballSection(
-    navController: NavController,
-    viewModel: FootballViewModel = viewModel(),
-    onOpenWebView: (String) -> Unit
-    ) {
-    val state by viewModel.footballNews.observeAsState()
-
-    Column {
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(
-                "Tin bóng đá",
-                style = MaterialTheme.typography.titleMedium,
-                color = Color.White
-            )
-            Text("Xem thêm", color = Color.Yellow, fontSize = 14.sp)
-        }
-
-        when (val result = state) {
-            is Resource.Success<*> -> {
-                val list = result.data?.data ?: emptyList()
-                LazyRow(modifier = Modifier.padding(8.dp)) {
-                    items(list) { football ->
-                        FootballCard(football = football, onClick = {
-                            onOpenWebView(football.url)
-                        })
-                    }
-                }
-            }
-
-            is Resource.Loading<*> -> CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
-            is Resource.Error<*> -> Text("Lỗi khi tải tin bóng đá")
-            else -> {}
-        }
-    }
-}
-
-@Composable
-fun FootballCard(football: Football, onClick: (String) -> Unit) {
-    Column(
-        modifier = Modifier
-            .width(200.dp)
-            .padding(8.dp)
-            .clickable { onClick(football.url) },
-    ) {
-        AsyncImage(
-            model = football.thumbnail,
-            contentDescription = football.title,
-            modifier = Modifier
-                .height(120.dp)
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(12.dp)),
-            contentScale = ContentScale.Crop
-        )
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(
-            football.title,
-            maxLines = 2, overflow = TextOverflow.Ellipsis,
-            color = Color.White
-        )
-    }
-}
-
-
-@Composable
-fun HotNewsSection(
-    navController: NavController,
-    viewModel: BanTinViewModel = viewModel(),
-    saveViewModel: SaveBanTinViewModel = viewModel(),
-    onOpenWebView: (String) -> Unit
-) {
-    val state by viewModel.listTinTuc.observeAsState()
-
-    LaunchedEffect(Unit) {
-        viewModel.fetchDataCallAPI(Constants.full)
-    }
-
-    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(
-                text = "Tin Nóng",
-                style = MaterialTheme.typography.titleMedium,
-                color = Color.White
-            )
-            Text(
-                text = "Xem thêm",
-                color = Color.Yellow,
-                fontSize = 14.sp,
-                modifier = Modifier.clickable {
-                    // Có thể thêm hành động "Xem thêm" tại đây nếu cần
-                }
-            )
-        }
-
-        when (val result = state) {
-            is Resource.Success<*> -> {
-                val list = result.data?.data ?: emptyList()
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .heightIn(min = 100.dp, max = 600.dp)
-                ) {
-                    items(list) { tinTuc ->
-                        BanTinItem(
-                            tinTuc = tinTuc,
-                            onClick = { link ->
-                                onOpenWebView(link)
-                            },
-                            onSave = { newsItem ->
-                                val userId = DataLocalManager.getInstance().getInfoUserId()
-                                saveViewModel.postNewsSave(
-                                    title = newsItem.title,
-                                    link = newsItem.link,
-                                    img = newsItem.img,
-                                    pubDate = newsItem.pubDate,
-                                    userId = userId
-                                )
-                            }
-                        )
-                    }
-                }
-            }
-
-            is Resource.Loading<*> -> {
-                Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator()
-                }
-            }
-
-            is Resource.Error<*> -> {
-                Text("Lỗi khi tải tin nóng", color = Color.Red)
-            }
-
-            else -> Unit
-        }
-    }
-}
-
-
-
-@Composable
-fun BanTinItem(
-    tinTuc: BanTin,
-    onClick: (String) -> Unit,
-    onSave: (BanTin) -> Unit
-) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 6.dp),
-        shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFF1E1E1E)),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-    ) {
-        Row(
-            modifier = Modifier
-                .padding(8.dp)
-        ) {
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(tinTuc.img)
-                    .crossfade(true)
-                    .diskCachePolicy(CachePolicy.ENABLED)
-                    .memoryCachePolicy(CachePolicy.ENABLED)
-                    .build(),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(100.dp)
-                    .clip(RoundedCornerShape(8.dp))
-                    .clickable {
-                        onSave(tinTuc)
-                        onClick(tinTuc.link)
-                    },
-                contentScale = ContentScale.Crop
-            )
-            Spacer(modifier = Modifier.width(10.dp))
-
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-            ) {
-                Text(
-                    text = tinTuc.title,
-                    style = MaterialTheme.typography.titleMedium,
-                    color = Color.White,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
-
-                Spacer(modifier = Modifier.height(4.dp))
-
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Lock,
-                        contentDescription = "time",
-                        tint = Color(0xFFFFD700),
-                        modifier = Modifier.size(14.dp)
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(
-                        text = tinTuc.pubDate,
-                        fontSize = 12.sp,
-                        color = Color(0xFFAAAAAA)
-                    )
-                    Spacer(modifier = Modifier.weight(1f))
-                    Text(
-                        text = "VnExpress",
-                        fontSize = 12.sp,
-                        color = Color(0xFFBBBBBB),
-                        modifier = Modifier.align(Alignment.Bottom)
-                    )
-                }
-            }
-        }
-    }
-}
 
 
 @Composable
@@ -524,29 +326,34 @@ fun CategoryTabRow(
         "KINH DOANH", "TÂM SỰ", "SỐ HÓA", "DU LỊCH"
     )
 
+    val colorScheme = MaterialTheme.colorScheme
+    val backgroundColor = colorScheme.surface
+    val contentColor = colorScheme.onSurface
+    val selectedColor = colorScheme.primary
+    val unselectedColor = colorScheme.onSurfaceVariant
+
     ScrollableTabRow(
         selectedTabIndex = selectedTabIndex,
         edgePadding = 0.dp,
-        containerColor = Color.Black,
-        contentColor = Color.White,
+        containerColor = backgroundColor,
+        contentColor = contentColor,
         modifier = Modifier.fillMaxWidth(),
         indicator = { tabPositions ->
             SecondaryIndicator(
-                Modifier.tabIndicatorOffset(tabPositions[selectedTabIndex]),
+                modifier = Modifier.tabIndicatorOffset(tabPositions[selectedTabIndex]),
                 color = Color(0xFF4CAF50)
             )
         }
     ) {
         tabTitles.forEachIndexed { index, title ->
+            val isSelected = selectedTabIndex == index
             Tab(
-                selected = selectedTabIndex == index,
-                onClick = {
-                    onTabSelected(index)
-                },
+                selected = isSelected,
+                onClick = { onTabSelected(index) },
                 text = {
                     Text(
                         text = title,
-                        color = if (selectedTabIndex == index) Color(0xFF4CAF50) else Color.Gray,
+                        color = if (isSelected) Color(0xFF4CAF50) else unselectedColor,
                         fontWeight = FontWeight.Medium
                     )
                 }

@@ -27,19 +27,19 @@ import com.example.news_backend.ui.bantin.BanTinItem
 
 
 
-
 @Composable
 fun CategoryScreen(
     viewModel: BanTinViewModel = viewModel(),
     onOpenWebView: (String) -> Unit
 ) {
+    val colorScheme = MaterialTheme.colorScheme
+
     val tabTitles = listOf(
         "PHỔ BIẾN", "NỔI BẬT", "MỚI NHẤT", "THẾ GIỚI", "THỂ THAO",
         "PHÁP LUẬT", "GIÁO DỤC", "SỨC KHỎE", "ĐỜI SỐNG", "KHOA HỌC",
         "KINH DOANH", "TÂM SỰ", "SỐ HÓA", "DU LỊCH"
     )
 
-    // Khóa thật để gọi API (phải khớp theo backend)
     val tabKeys = listOf(
         "tin-moi-nhat", "tin-noi-bat", "tin-moi-nhat", "tin-the-gioi", "tin-the-thao",
         "tin-phap-luat", "tin-giao-duc", "tin-suc-khoe", "tin-doi-song", "tin-khoa-hoc",
@@ -49,7 +49,6 @@ fun CategoryScreen(
     val selectedTab = remember { mutableIntStateOf(0) }
     val listTinTuc by viewModel.listTinTuc.observeAsState()
 
-    // Gọi API khi tab được chọn
     LaunchedEffect(selectedTab.intValue) {
         val selectedKey = tabKeys[selectedTab.intValue]
         viewModel.fetchDataCallAPI(selectedKey)
@@ -58,21 +57,21 @@ fun CategoryScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF121212)) // nền tối
+            .background(colorScheme.background)
     ) {
         // Tabs
         ScrollableTabRow(
             selectedTabIndex = selectedTab.intValue,
             edgePadding = 12.dp,
-            containerColor = Color(0xFF1E1E1E),
-            contentColor = Color.White,
+            containerColor = colorScheme.background,
+            contentColor = colorScheme.onSurface,
             indicator = { tabPositions ->
                 Box(
                     Modifier
                         .tabIndicatorOffset(tabPositions[selectedTab.intValue])
                         .height(3.dp)
-                        .background(Color(0xFF4CAF50), RoundedCornerShape(2.dp))
-                )
+                        .background(Color(0xFF4CAF50))
+                        )
             },
             divider = {}
         ) {
@@ -81,7 +80,7 @@ fun CategoryScreen(
                     selected = selectedTab.intValue == index,
                     onClick = { selectedTab.intValue = index },
                     selectedContentColor = Color(0xFF4CAF50),
-                    unselectedContentColor = Color.White.copy(alpha = 0.6f),
+                    unselectedContentColor = colorScheme.onSurface.copy(alpha = 0.6f),
                     text = {
                         Text(
                             text = title,
@@ -93,7 +92,8 @@ fun CategoryScreen(
                 )
             }
         }
-// Nội dung
+
+        // Nội dung
         when (val resource = listTinTuc) {
             is Resource.Loading -> {
                 Box(
@@ -105,7 +105,6 @@ fun CategoryScreen(
             }
 
             is Resource.Success -> {
-                // Sắp xếp theo id giảm dần ngay tại đây
                 val newsList = resource.data?.data.orEmpty().sortedByDescending { it.title }
                 if (newsList.isEmpty()) {
                     Box(
@@ -113,8 +112,8 @@ fun CategoryScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            "Không có dữ liệu",
-                            color = Color.White.copy(alpha = 0.8f)
+                            text = "Không có dữ liệu",
+                            color = colorScheme.onBackground.copy(alpha = 0.8f)
                         )
                     }
                 } else {
@@ -138,7 +137,7 @@ fun CategoryScreen(
                 ) {
                     Text(
                         text = "Đã xảy ra lỗi: ${resource.message ?: "Không rõ lỗi"}",
-                        color = MaterialTheme.colorScheme.error,
+                        color = colorScheme.error,
                         modifier = Modifier.padding(16.dp)
                     )
                 }
@@ -151,12 +150,10 @@ fun CategoryScreen(
                 ) {
                     Text(
                         "Chưa có dữ liệu",
-                        color = Color.White.copy(alpha = 0.6f)
+                        color = colorScheme.onBackground.copy(alpha = 0.6f)
                     )
                 }
             }
         }
-
     }
-
 }

@@ -27,6 +27,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -36,7 +37,6 @@ import com.example.news_backend.data.models.BanTin
 import com.example.news_backend.data.sharedpreferences.DataLocalManager
 import com.example.news_backend.network.response.SavePosResponse
 import com.example.news_backend.ui.home.BottomNavigationBar
-
 
 @Composable
 fun SaveBanTinScreen(
@@ -49,14 +49,15 @@ fun SaveBanTinScreen(
     val context = LocalContext.current
     val banTinState by viewModel.getSaveBanTin.observeAsState()
     val closeParam = remember { mutableStateOf(false) }
+    val colorScheme = MaterialTheme.colorScheme
 
     LaunchedEffect(Unit) {
         viewModel.getListAllNewsSave()
     }
 
     Scaffold(
-        bottomBar = { BottomNavigationBar(navController = navController)},
-        containerColor = Color.Black // Màu nền cho Scaffold
+        bottomBar = { BottomNavigationBar(navController = navController) },
+        containerColor = colorScheme.background
     ) { innerPadding ->
 
         Column(
@@ -64,13 +65,12 @@ fun SaveBanTinScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-
             // Header
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp)
-                    .background(Color.Black)
+                    .background(colorScheme.background)
                     .padding(horizontal = 12.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -85,7 +85,7 @@ fun SaveBanTinScreen(
                             else
                                 R.drawable.ic_arrow_back_24px
                         ),
-                        tint = Color.Unspecified,
+                        tint = colorScheme.onBackground,
                         contentDescription = "Back"
                     )
                 }
@@ -93,8 +93,9 @@ fun SaveBanTinScreen(
                 Text(
                     text = "Tin Đã Đọc",
                     fontSize = 20.sp,
+                    fontFamily = FontFamily.SansSerif,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White
+                    color = colorScheme.onBackground
                 )
 
                 IconButton(onClick = {
@@ -102,8 +103,8 @@ fun SaveBanTinScreen(
                 }) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_delete),
-                        tint = Color.Unspecified,
-                        contentDescription = "Delete",
+                        tint = colorScheme.onBackground,
+                        contentDescription = "Delete"
                     )
                 }
             }
@@ -116,11 +117,8 @@ fun SaveBanTinScreen(
                             items(data) { item ->
                                 BanTinItem(
                                     item = item,
-                                    onClick = { link ->
-                                        onOpenWebView(link)
-                                    },
+                                    onClick = { link -> onOpenWebView(link) },
                                     onSave = { newsItem ->
-                                        // Khi người dùng click vào, gọi hàm lưu tin vào backend
                                         val userId = DataLocalManager.getInstance().getInfoUserId()
                                         viewModel.postNewsSave(
                                             title = newsItem.title,
@@ -142,7 +140,7 @@ fun SaveBanTinScreen(
                                         .padding(16.dp),
                                     contentAlignment = Alignment.Center
                                 ) {
-                                    CircularProgressIndicator()
+                                    CircularProgressIndicator(color = colorScheme.primary)
                                 }
                             }
                         }
@@ -151,7 +149,7 @@ fun SaveBanTinScreen(
                             item {
                                 Text(
                                     "Lỗi khi tải tin tức",
-                                    color = Color.Red,
+                                    color = colorScheme.error,
                                     modifier = Modifier.padding(16.dp)
                                 )
                             }
@@ -163,18 +161,21 @@ fun SaveBanTinScreen(
     }
 }
 
+
 @Composable
 fun BanTinItem(
     item: SavePosResponse,
-    onClick: (String) -> Unit, // Thêm hàm onClick để nhận URL và mở WebView
+    onClick: (String) -> Unit,
     onSave: (SavePosResponse) -> Unit
 ) {
+    val colorScheme = MaterialTheme.colorScheme
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 8.dp, vertical = 4.dp),
         shape = RoundedCornerShape(8.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFF1E1E1E)), // Màu nền tối
+        colors = CardDefaults.cardColors(containerColor = colorScheme.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Row(
@@ -206,7 +207,7 @@ fun BanTinItem(
                     text = item.title,
                     style = MaterialTheme.typography.bodyLarge.copy(
                         fontWeight = FontWeight.Bold,
-                        color = Color.White
+                        color = colorScheme.onSurface
                     ),
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
@@ -218,7 +219,7 @@ fun BanTinItem(
                     Icon(
                         imageVector = Icons.Default.Lock,
                         contentDescription = "Clock",
-                        tint = Color(0xFFFFC107), // màu vàng như hình
+                        tint = Color(0xFFFFC107),
                         modifier = Modifier.size(16.dp)
                     )
 
@@ -226,7 +227,7 @@ fun BanTinItem(
 
                     Text(
                         text = item.pubDate,
-                        style = MaterialTheme.typography.bodySmall.copy(color = Color.White)
+                        style = MaterialTheme.typography.bodySmall.copy(color = colorScheme.onSurface)
                     )
 
                     Spacer(modifier = Modifier.width(8.dp))
@@ -234,7 +235,7 @@ fun BanTinItem(
                     Text(
                         text = "VnExpress",
                         fontSize = 12.sp,
-                        color = Color.Gray,
+                        color = colorScheme.onSurfaceVariant,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )

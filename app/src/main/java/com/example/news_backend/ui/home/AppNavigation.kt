@@ -15,10 +15,7 @@ import com.example.news_backend.ui.Navbar.PostNewsScreen
 import com.example.news_backend.ui.Navbar.UserListScreen
 import com.example.news_backend.ui.account.AccountViewModel
 import com.example.news_backend.ui.account.screen.AccountScreen
-import com.example.news_backend.ui.account.screen.LoginScreen
 import com.example.news_backend.ui.account.screen.UpdateUserScreen
-import com.example.news_backend.ui.bantin.BanTinItem
-import com.example.news_backend.ui.bantin.BanTinScreen
 import com.example.news_backend.ui.bantin.BanTinViewModel
 import com.example.news_backend.ui.menu.CombinedMenuSettingsScreen
 import com.example.news_backend.ui.menu.ThemeViewModel
@@ -26,7 +23,6 @@ import com.example.news_backend.ui.menu.WebViewScreen
 import com.example.news_backend.ui.save.SaveBanTinScreen
 import com.example.news_backend.ui.save.WebviewScreen
 import com.example.news_backend.ui.search.SearchScreen
-import com.example.news_backend.ui.search.news.SearchNewsViewModel
 
 @Composable
 fun AppNavigation(themeViewModel: ThemeViewModel) {

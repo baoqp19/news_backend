@@ -1,5 +1,6 @@
 package com.example.news_backend.ui.Navbar
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -21,6 +22,7 @@ import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -53,6 +55,8 @@ import com.example.news_backend.network.response.User
 import com.example.news_backend.ui.menu.update.UpdateUserViewModel
 import com.example.news_backend.utils.Resource
 import kotlinx.coroutines.launch
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserListScreen(userViewModel: UpdateUserViewModel = viewModel()) {
@@ -67,18 +71,13 @@ fun UserListScreen(userViewModel: UpdateUserViewModel = viewModel()) {
 
     LaunchedEffect(updateRoleResult) {
         updateRoleResult?.let { result ->
-            when (result) {
-                is Resource.Success -> {
-                    scope.launch {
-                        snackbarHostState.showSnackbar("✅ Cập nhật role thành công")
-                    }
+            scope.launch {
+                val message = when (result) {
+                    is Resource.Success -> "✅ Cập nhật role thành công"
+                    is Resource.Error -> "Lỗi: ${result.message}"
+                    else -> return@launch
                 }
-                is Resource.Error -> {
-                    scope.launch {
-                        snackbarHostState.showSnackbar("Lỗi: ${result.message}")
-                    }
-                }
-                else -> Unit
+                snackbarHostState.showSnackbar(message)
             }
         }
     }
@@ -86,16 +85,25 @@ fun UserListScreen(userViewModel: UpdateUserViewModel = viewModel()) {
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
-            TopAppBar(
-                title = { Text("Quản lý người dùng") },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.primary)
+            CenterAlignedTopAppBar(
+                title = {
+                    Text(
+                        text = "Quản lý người dùng",
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
+                },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary
+                )
             )
         }
     ) { paddingValues ->
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .padding(paddingValues)) {
-
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
             when (allUsersState) {
                 is Resource.Loading -> {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
@@ -103,6 +111,7 @@ fun UserListScreen(userViewModel: UpdateUserViewModel = viewModel()) {
 
                 is Resource.Success -> {
                     val users = (allUsersState as Resource.Success<List<User>>).data ?: emptyList()
+
                     LazyColumn(
                         modifier = Modifier
                             .fillMaxSize()
@@ -115,14 +124,25 @@ fun UserListScreen(userViewModel: UpdateUserViewModel = viewModel()) {
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(vertical = 8.dp),
-                                colors = CardDefaults.cardColors(containerColor = Color(0xFFF6F6F6)),
-                                elevation = CardDefaults.cardElevation(6.dp),
+                                colors = CardDefaults.cardColors(
+                                    containerColor = MaterialTheme.colorScheme.surface
+                                ),
+                                elevation = CardDefaults.cardElevation(4.dp),
                                 shape = RoundedCornerShape(16.dp)
                             ) {
                                 Column(modifier = Modifier.padding(16.dp)) {
-                                    Text(text = "👤 ${user.name}", fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                                    Text(
+                                        text = "👤 ${user.name}",
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 18.sp,
+                                        color = MaterialTheme.colorScheme.onSurface
+                                    )
                                     Spacer(modifier = Modifier.height(4.dp))
-                                    Text(text = "✉️ ${user.email}", fontSize = 14.sp, color = Color.Gray)
+                                    Text(
+                                        text = "✉️ ${user.email}",
+                                        fontSize = 14.sp,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
 
                                     Spacer(modifier = Modifier.height(12.dp))
 
@@ -134,7 +154,8 @@ fun UserListScreen(userViewModel: UpdateUserViewModel = viewModel()) {
                                         Text(
                                             text = "Role:",
                                             fontWeight = FontWeight.Medium,
-                                            fontSize = 14.sp
+                                            fontSize = 14.sp,
+                                            color = MaterialTheme.colorScheme.onSurface
                                         )
 
                                         DropdownMenuRoleSelector(
@@ -155,7 +176,7 @@ fun UserListScreen(userViewModel: UpdateUserViewModel = viewModel()) {
                     val message = (allUsersState as Resource.Error).message
                     Text(
                         text = "Lỗi: $message",
-                        color = Color.Red,
+                        color = MaterialTheme.colorScheme.error,
                         modifier = Modifier
                             .padding(16.dp)
                             .align(Alignment.Center)
@@ -174,17 +195,17 @@ fun DropdownMenuRoleSelector(
     var expanded by remember { mutableStateOf(false) }
     val roles = listOf("ADMIN", "USER")
 
-    Box(
-        modifier = Modifier
-            .wrapContentSize(Alignment.TopStart)
-            .background(Color.Transparent)
-    ) {
+    Box(modifier = Modifier.wrapContentSize()) {
         OutlinedButton(
             onClick = { expanded = true },
             shape = RoundedCornerShape(12.dp),
-            colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.primary)
+            colors = ButtonDefaults.outlinedButtonColors(
+                contentColor = MaterialTheme.colorScheme.primary,
+                containerColor = MaterialTheme.colorScheme.surface
+            ),
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary)
         ) {
-            Icon(Icons.Default.ArrowDropDown, contentDescription = "Chọn Role")
+            Icon(Icons.Default.ArrowDropDown, contentDescription = null)
             Spacer(modifier = Modifier.width(4.dp))
             Text(text = currentRole)
         }
@@ -195,7 +216,12 @@ fun DropdownMenuRoleSelector(
         ) {
             roles.forEach { role ->
                 DropdownMenuItem(
-                    text = { Text(role) },
+                    text = {
+                        Text(
+                            text = role,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                    },
                     onClick = {
                         onRoleSelected(role)
                         expanded = false

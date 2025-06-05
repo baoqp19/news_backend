@@ -32,8 +32,8 @@ open class BaseViewModelImpl : BaseViewModel, ViewModel() {
             }
 
             override fun onFailure(call: Call<T>, t: Throwable) {
-                Log.d("Network", "Đăng kí thành công")
-                resultLiveData.value = Resource.Error("Đăng kí thành công")
+                Log.d("Network", "Đăng nhập thành công")
+                resultLiveData.value = Resource.Error("Đăng nhập thành công")
             }
         })
     }

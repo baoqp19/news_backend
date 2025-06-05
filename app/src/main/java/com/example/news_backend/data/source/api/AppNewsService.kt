@@ -7,6 +7,7 @@ import com.example.news_backend.network.ApiResponse
 import com.example.news_backend.network.AuthenticationResponse
 import com.example.news_backend.network.IntrospectResponse
 import com.example.news_backend.network.UserResponse
+import com.example.news_backend.network.request.ChangePassword
 import com.example.news_backend.network.request.ChangePasswordRequest
 import com.example.news_backend.network.request.FoolBallRequest
 import com.example.news_backend.network.request.FootballDto
@@ -22,6 +23,7 @@ import com.example.news_backend.network.response.UserResponseCoppy
 import com.example.news_backend.network.response.UserUpdateRoleRequest
 import com.example.news_backend.network.response.WeatherResponse
 import com.example.news_backend.utils.Constants
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
@@ -116,6 +118,10 @@ interface AppNewsService {
         @Body request: ChangePasswordRequest?
     ): Call<ApiResponse<UserResponse>>
 
+    @PUT("api/auth/change-password")
+    suspend fun changePassword(
+        @Body request: ChangePassword
+    ): Response<ResponseBody>
 
     /**
      *

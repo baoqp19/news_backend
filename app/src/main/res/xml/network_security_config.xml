@@ -5,7 +5,7 @@
         <domain includeSubdomains="false">192.168.46.245</domain>
         <domain includeSubdomains="false">192.168.48.245</domain>
         <domain includeSubdomains="false">172.20.10.9</domain>
-
+        <domain includeSubdomains="false"> 10.50.179.134</domain>
         <!-- Nếu dùng emulator -->
         <domain includeSubdomains="false">10.0.2.2</domain>
     </domain-config>

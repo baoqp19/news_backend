@@ -65,11 +65,6 @@ fun SettingsDialogContent(
                     .padding(bottom = 24.dp)
             )
 
-            SettingsDialogButton(
-                text = "Đổi Mật Khẩu",
-                onClick = onChangePassword
-            )
-
             Divider(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -109,7 +104,7 @@ fun SettingsDialogButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val customButtonColor = MaterialTheme.colorScheme.primary
+//    val customButtonColor = MaterialTheme.colorScheme.primary
     val interactionSource = remember { MutableInteractionSource() }
     val pressed by interactionSource.collectIsPressedAsState()
 
@@ -122,9 +117,9 @@ fun SettingsDialogButton(
                 interactionSource = interactionSource
             )
             .background(
-                color = if (pressed) Color(0x0F9479B7)
-                else customButtonColor.copy(alpha = 0.3f),
-                shape = RoundedCornerShape(16.dp)
+                color = Color(0x0F5E6CD7)
+//                else customButtonColor.copy(alpha = 0.3f),
+//                shape = RoundedCornerShape(16.dp)
             )
             .padding(horizontal = 16.dp, vertical = 12.dp),
         contentAlignment = Alignment.Center

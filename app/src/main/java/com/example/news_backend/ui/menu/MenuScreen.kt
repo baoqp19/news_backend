@@ -11,8 +11,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.*
@@ -21,6 +23,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,7 +40,9 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.news_backend.R
 import com.example.news_backend.data.sharedpreferences.DataLocalManager
+import com.example.news_backend.ui.Navbar.DrawerItem
 import com.example.news_backend.ui.home.BottomNavigationBar
+import kotlinx.coroutines.launch
 import java.net.URLEncoder
 
 @Composable
@@ -49,8 +54,9 @@ fun CombinedMenuSettingsScreen(
     val name = remember { DataLocalManager.getInstance().getInfoUserName() ?: "Người dùng" }
     val email = remember { DataLocalManager.getInstance().getInfoEmail() ?: "email@example.com" }
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val drawerState = rememberDrawerState(DrawerValue.Closed)
 
-    val isDarkMode = themeViewModel.isDarkTheme
     Scaffold(
         bottomBar = {
             BottomNavigationBar(navController = navController)
@@ -60,16 +66,12 @@ fun CombinedMenuSettingsScreen(
             Dialog(onDismissRequest = { showDialog = false }) {
                 SettingsDialogContent(
                     navController = navController,
-                    onChangePassword = {
-                        showDialog = false
-                    },
+                    onChangePassword = { showDialog = false },
                     onUpdateInfo = {
                         showDialog = false
                         navController.navigate("userinfo")
                     },
-                    onDeleteInfo = {
-                        showDialog = false
-                    }
+                    onDeleteInfo = { showDialog = false }
                 )
             }
         }
@@ -104,7 +106,7 @@ fun CombinedMenuSettingsScreen(
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize()
-                .background(Color(0xFFF2F2F2))
+                .background(MaterialTheme.colorScheme.background)
                 .padding(16.dp)
         ) {
             item {
@@ -119,6 +121,7 @@ fun CombinedMenuSettingsScreen(
                         "Cài đặt",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onBackground
                     )
 
                     Row(
@@ -129,9 +132,18 @@ fun CombinedMenuSettingsScreen(
                             .clickable { }
                             .padding(horizontal = 12.dp, vertical = 6.dp)
                     ) {
-                        Icon(Icons.Default.Phone, contentDescription = null, tint = Color.White, modifier = Modifier.size(16.dp))
+                        Icon(
+                            Icons.Default.Phone,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onPrimary,
+                            modifier = Modifier.size(16.dp)
+                        )
                         Spacer(Modifier.width(6.dp))
-                        Text("0828-7853", color = Color.White, fontWeight = FontWeight.Bold)
+                        Text(
+                            "0828-7853",
+                            color = MaterialTheme.colorScheme.onPrimary,
+                            fontWeight = FontWeight.Bold
+                        )
                     }
                 }
             }
@@ -139,6 +151,7 @@ fun CombinedMenuSettingsScreen(
             item {
                 Card(
                     shape = RoundedCornerShape(16.dp),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                     elevation = CardDefaults.cardElevation(4.dp),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -148,11 +161,20 @@ fun CombinedMenuSettingsScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.padding(16.dp)
                     ) {
-                        Icon(painter = painterResource(id = R.drawable.userlogin), contentDescription = null, modifier = Modifier.size(48.dp), tint = Color.Unspecified)
+                        Icon(
+                            painter = painterResource(id = R.drawable.userlogin),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(48.dp)
+                                .clip(CircleShape)
+                                .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f))
+                                .padding(8.dp),
+                            tint = Color.Unspecified
+                        )
                         Spacer(Modifier.width(12.dp))
                         Column {
-                            Text(name, fontWeight = FontWeight.SemiBold)
-                            Text(email, color = Color.Gray, fontSize = 13.sp)
+                            Text(name, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onSurface)
+                            Text(email, color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 13.sp)
                         }
                     }
                 }
@@ -162,33 +184,38 @@ fun CombinedMenuSettingsScreen(
             item {
                 Card(
                     shape = RoundedCornerShape(16.dp),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                     elevation = CardDefaults.cardElevation(4.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
-                        Text("Các Trang Mạng Xã Hội", fontWeight = FontWeight.Medium)
+                        Text("Các Trang Mạng Xã Hội", fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onSurface)
                         Spacer(Modifier.height(12.dp))
                         Row(horizontalArrangement = Arrangement.spacedBy(24.dp)) {
                             Icon(
-                                painterResource(id = R.drawable.facebook), null,
-                                modifier = Modifier.size(32.dp).clickable {
-                                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/pqbao.05"))
-                                    context.startActivity(intent)
-                                },
+                                painter = painterResource(id = R.drawable.facebook), null,
+                                modifier = Modifier
+                                    .size(32.dp)
+                                    .clickable {
+                                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/pqbao.05"))
+                                        context.startActivity(intent)
+                                    },
                                 tint = Color(0xFF1877F2)
                             )
                             Icon(painter = painterResource(id = R.drawable.logo_messenger_new), contentDescription = null, modifier = Modifier.size(32.dp), tint = Color.Unspecified)
                             Icon(painter = painterResource(id = R.drawable.zalo_sharelogo), null, modifier = Modifier.size(32.dp), tint = Color.Unspecified)
                             Icon(
-                                painterResource(id = R.drawable.ic_github), null,
-                                modifier = Modifier.size(32.dp).clickable {
-                                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/baoqp19"))
-                                    context.startActivity(intent)
-                                },
+                                painter = painterResource(id = R.drawable.ic_github), null,
+                                modifier = Modifier
+                                    .size(32.dp)
+                                    .clickable {
+                                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/baoqp19"))
+                                        context.startActivity(intent)
+                                    },
                                 tint = Color(0xFF1877F2)
                             )
                             Spacer(Modifier.weight(1f))
-                            Icon(Icons.Default.PlayArrow, contentDescription = null, modifier = Modifier.size(16.dp))
+                            Icon(Icons.Default.PlayArrow, contentDescription = null, modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.onSurface)
                         }
                     }
                 }
@@ -205,9 +232,8 @@ fun CombinedMenuSettingsScreen(
                 }
                 Spacer(modifier = Modifier.height(8.dp))
             }
-            item {
-                SectionTitle("Tiện ích & cài đặt")
-            }
+
+            item { SectionTitle("Tiện ích & cài đặt") }
             items(tienIchItems) { (icon, title) ->
                 when (title) {
                     "Chế độ tối" -> {
@@ -218,21 +244,18 @@ fun CombinedMenuSettingsScreen(
                             onToggle = { themeViewModel.toggleTheme() }
                         )
                     }
-
                     "Lịch" -> {
                         SettingsCardItem(iconRes = icon, title = title) {
                             val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.24h.com.vn/lich-van-nien-c936.html"))
                             context.startActivity(intent)
                         }
                     }
-
                     else -> {
                         SettingsCardItem(iconRes = icon, title = title) {
-                            // Handle other clicks
+                            // Xử lý click khác
                         }
                     }
                 }
-
                 Spacer(modifier = Modifier.height(8.dp))
             }
 
@@ -240,7 +263,16 @@ fun CombinedMenuSettingsScreen(
             items(khacItems) { (icon, title) ->
                 SettingsCardItem(iconRes = icon, title = title) {
                     if (title == "Đăng xuất") {
-                        // Xử lý logout
+                            DataLocalManager.getInstance().removeValueFromSharedPreferences()
+                            scope.launch {
+                                drawerState.close()
+                                navController.navigate("login") {
+                                    popUpTo(navController.graph.startDestinationId) {
+                                        inclusive = true // Xoá toàn bộ stack cũ
+                                    }
+                                    launchSingleTop = true
+                                }
+                            }
                     }
                 }
                 Spacer(modifier = Modifier.height(8.dp))
@@ -248,6 +280,7 @@ fun CombinedMenuSettingsScreen(
         }
     }
 }
+
 
 class ThemeViewModel : ViewModel() {
     var isDarkTheme = mutableStateOf(false)
@@ -312,14 +345,13 @@ fun DarkModeSwitchCard(
 fun SectionTitle(title: String) {
     Text(
         text = title,
-        fontSize = 18.sp,
+        fontSize = 16.sp,
         fontWeight = FontWeight.SemiBold,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 12.dp),
-        color = Color.Black
+        modifier = Modifier.padding(vertical = 8.dp),
+        color = MaterialTheme.colorScheme.onBackground
     )
 }
+
 
 @Composable
 fun SettingsCardItem(

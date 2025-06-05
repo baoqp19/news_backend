@@ -33,7 +33,6 @@ import com.example.news_backend.network.response.SavePosResponse
 import com.example.news_backend.ui.bantin.BanTinViewModel
 import com.example.news_backend.utils.Constants
 import com.example.news_backend.utils.Resource
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(
@@ -64,6 +63,8 @@ fun SearchScreen(
         }
     }
 
+    val colorScheme = MaterialTheme.colorScheme
+
     Scaffold(
         topBar = {
             SearchAppBar(
@@ -73,19 +74,19 @@ fun SearchScreen(
                 isSearching = isSearching,
                 onClearSearch = { query = "" },
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color(0xFF497BC4),
-                    unfocusedBorderColor = Color(0xFF32578D).copy(alpha = 0.5f),
-                    focusedLeadingIconColor = Color(0xFFC8D2E0),
-                    unfocusedLeadingIconColor = Color(0xFFBEC5D2).copy(alpha = 0.5f),
-                    focusedTextColor = Color(0xFFA0AEBE),
-                    unfocusedTextColor = Color(0xFFA3AEC0).copy(alpha = 0.8f)
+                    focusedBorderColor = colorScheme.primary,
+                    unfocusedBorderColor = colorScheme.onSurface.copy(alpha = 0.5f),
+                    focusedLeadingIconColor = colorScheme.primary,
+                    unfocusedLeadingIconColor = colorScheme.onSurfaceVariant,
+                    focusedTextColor = colorScheme.onSurface,
+                    unfocusedTextColor = colorScheme.onSurfaceVariant
                 )
             )
         },
         bottomBar = {
             BottomNavigationBar(navController = navController)
         },
-                containerColor = Color(0xFF121212),
+        containerColor = colorScheme.background
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -98,23 +99,27 @@ fun SearchScreen(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    CircularProgressIndicator()
+                    CircularProgressIndicator(color = colorScheme.primary)
                 }
 
                 is Resource.Error -> Text(
                     text = "Lỗi: ${result.message}",
-                    color = MaterialTheme.colorScheme.error
+                    color = colorScheme.error
                 )
 
                 is Resource.Success -> {
                     if (filteredBanTin.isEmpty()) {
-                        Text("Không tìm thấy bản tin nào.")
+                        Text(
+                            text = "Không tìm thấy bản tin nào.",
+                            color = colorScheme.onBackground
+                        )
                     } else {
                         LazyColumn {
                             items(filteredBanTin) { tinTuc ->
-                                BanTinItem(tinTuc = tinTuc, onClick = {
-                                        onOpenWebView(tinTuc.link)
-                                    })
+                                BanTinItem(
+                                    tinTuc = tinTuc,
+                                    onClick = { onOpenWebView(tinTuc.link) }
+                                )
                             }
                         }
                     }
@@ -123,7 +128,6 @@ fun SearchScreen(
         }
     }
 }
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -135,6 +139,8 @@ fun SearchAppBar(
     onClearSearch: () -> Unit,
     colors: TextFieldColors
 ) {
+    val colorScheme = MaterialTheme.colorScheme
+
     CenterAlignedTopAppBar(
         title = {
             if (isSearching) {
@@ -147,7 +153,7 @@ fun SearchAppBar(
             } else {
                 Text(
                     text = "Tìm kiếm bản tin",
-                    color = Color.White
+                    color = colorScheme.onPrimaryContainer
                 )
             }
         },
@@ -156,17 +162,15 @@ fun SearchAppBar(
                 Icon(
                     imageVector = Icons.Default.Search,
                     contentDescription = "Tìm kiếm",
-                    tint = Color.White
+                    tint = colorScheme.onPrimaryContainer
                 )
             }
         },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-            containerColor = Color.Black
+            containerColor = colorScheme.background
         )
     )
 }
-
-
 
 @Composable
 fun SearchBarTextField(
@@ -179,7 +183,9 @@ fun SearchBarTextField(
     OutlinedTextField(
         value = query,
         onValueChange = onQueryChange,
-        placeholder = { Text("Tìm kiếm...") },
+        placeholder = {
+            Text("Tìm kiếm...", color = MaterialTheme.colorScheme.onSurfaceVariant)
+        },
         trailingIcon = {
             if (query.isNotEmpty()) {
                 IconButton(onClick = onClearSearch) {
@@ -197,18 +203,19 @@ fun SearchBarTextField(
     )
 }
 
-
 @Composable
 fun BanTinItem(
     tinTuc: BanTin,
-    onClick: (String) -> Unit // Thêm hàm onClick để nhận URL và mở WebView
+    onClick: (String) -> Unit
 ) {
+    val colorScheme = MaterialTheme.colorScheme
+
     Card(
         modifier = Modifier
-            .fillMaxWidth()  // Đảm bảo Card chiếm hết chiều rộng
+            .fillMaxWidth()
             .padding(horizontal = 8.dp, vertical = 4.dp),
         shape = RoundedCornerShape(8.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFF1E1E1E)), // Màu nền tối
+        colors = CardDefaults.cardColors(containerColor = colorScheme.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Row(
@@ -222,7 +229,7 @@ fun BanTinItem(
                 modifier = Modifier
                     .size(100.dp)
                     .clip(RoundedCornerShape(8.dp))
-                    .clickable { onClick(tinTuc.link) }, // Xử lý sự kiện nhấn vào ảnh
+                    .clickable { onClick(tinTuc.link) },
                 contentScale = ContentScale.Crop,
             )
 
@@ -237,7 +244,7 @@ fun BanTinItem(
                     text = tinTuc.title,
                     style = MaterialTheme.typography.bodyLarge.copy(
                         fontWeight = FontWeight.Bold,
-                        color = Color.White
+                        color = colorScheme.onSurface
                     ),
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
@@ -249,7 +256,7 @@ fun BanTinItem(
                     Icon(
                         imageVector = Icons.Default.Lock,
                         contentDescription = "Clock",
-                        tint = Color(0xFFFFC107), // Màu vàng như hình
+                        tint = Color(0xFFFFC107),
                         modifier = Modifier.size(16.dp)
                     )
 
@@ -257,7 +264,7 @@ fun BanTinItem(
 
                     Text(
                         text = tinTuc.pubDate,
-                        style = MaterialTheme.typography.bodySmall.copy(color = Color.White)
+                        style = MaterialTheme.typography.bodySmall.copy(color = colorScheme.onSurface)
                     )
 
                     Spacer(modifier = Modifier.width(8.dp))
@@ -265,7 +272,7 @@ fun BanTinItem(
                     Text(
                         text = "VnExpress",
                         fontSize = 12.sp,
-                        color = Color.Gray,
+                        color = colorScheme.onSurfaceVariant,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )

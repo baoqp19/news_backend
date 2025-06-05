@@ -118,14 +118,6 @@ fun DrawerContent(navController: NavController, drawerState: DrawerState, permis
                 navController.navigate("postFoolball")
                 scope.launch { drawerState.close() }
             }
-
-            DrawerItem(
-                title = "Phê duyệt tin tức",
-                icon = Icons.Default.KeyboardArrowDown
-            ) {
-                scope.launch { drawerState.close() }
-            }
-
             DrawerItem(
                 title = "Phân quyền",
                 icon = Icons.Default.Person
@@ -190,13 +182,15 @@ fun DrawerItem(title: String, icon: ImageVector, onClick: () -> Unit) {
             imageVector = icon,
             contentDescription = null,
             modifier = Modifier.size(24.dp),
-            tint = Color(0xFF1A237E)
+            tint = MaterialTheme.colorScheme.primary
         )
         Spacer(modifier = Modifier.width(16.dp))
         Text(
             text = title,
-            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium)
+            style = MaterialTheme.typography.bodyMedium.copy(
+                fontWeight = FontWeight.Medium,
+                color = MaterialTheme.colorScheme.onSurface
+            )
         )
     }
 }
-

@@ -206,7 +206,7 @@ fun LoginScreen(
                             it.data.roles.first()
                         )
 
-                        // ✅ Lưu token
+                        // Lưu token
                         setSaveTokenKey(it.data.token)
                     }
                 }
